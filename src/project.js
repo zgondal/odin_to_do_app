@@ -1,10 +1,11 @@
 export default class Project {
     static projectID = 0;
+    
     constructor(title, colour) {
         this.title = title;
         this._colour = colour;
         this.tasks = [];
-        this.id = projectID++;
+        this.id = this.projectID++;
     }
 
     get colour() {

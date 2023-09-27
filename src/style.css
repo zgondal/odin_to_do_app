@@ -1,18 +1,118 @@
+:root {
+  font-size: 8px;
+}
+
 body {
   display: flex;
+  gap: 32px;
+  background-color: rgb(42, 42, 42);
+  color: aliceblue;
 }
 
-.projects {
+.nav {
+  display: flex;
+  flex-direction: column;
+  font-size: 3rem;
+  gap: 16px;
+}
+.nav > #today {
+  cursor: pointer;
+}
+.nav > #week {
+  cursor: pointer;
+}
+.nav > .projects {
   display: flex;
   flex-direction: column;
 }
-
-#add-task {
-  display: flex;
-  flex-direction: column;
+.nav > .projects > span {
+  display: inline-flex;
+}
+.nav > .projects > span > h3 {
+  margin: 0;
+  font-size: 3rem;
+}
+.nav > .projects > span > button {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  height: 32px;
+}
+.nav > .projects > span > button > svg {
+  max-height: 32px;
+  width: auto;
+}
+.nav > .projects > ul > li > .project-item {
+  cursor: pointer;
 }
 
-#add-project {
+.tasks {
   display: flex;
   flex-direction: column;
+  font-size: 2.5rem;
+  background-color: rgb(122, 122, 122);
+}
+.tasks > div {
+  display: inline-flex;
+}
+.tasks > div > h3 {
+  margin: 0;
+}
+.tasks > div :last-child {
+  margin-left: auto;
+}
+.tasks > div > button {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  height: 32px;
+}
+.tasks > div > button > svg {
+  max-height: 32px;
+  width: auto;
+}
+.tasks > ul :nth-child(odd) {
+  background-color: antiquewhite;
+}
+.tasks > ul :nth-child(even) {
+  background-color: rgb(155, 155, 155);
+}
+
+dialog {
+  border-radius: 8px;
+}
+
+dialog::backdrop {
+  background-color: rgba(121, 121, 121, 0.8);
+}
+
+#new-project {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 2rem;
+}
+#new-project > div {
+  display: flex;
+  gap: 8px;
+}
+#new-project > div :last-child {
+  margin-left: auto;
+}
+#new-project :last-child {
+  margin-left: auto;
+  gap: 16px;
+}
+
+#new-task {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 2rem;
+}
+#new-task > div:last-child {
+  margin-left: auto;
+}
+#new-task :last-child {
+  margin-left: auto;
 }/*# sourceMappingURL=style.css.map */
