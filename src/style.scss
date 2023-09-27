@@ -1,0 +1,18 @@
+body {
+    display: flex;
+}
+
+.projects {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-task {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-project {
+    display: flex;
+    flex-direction: column;
+}
