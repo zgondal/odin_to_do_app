@@ -1,13 +1,24 @@
 export default class Project {
-    static projectID = 0;
+    static projectID = null;
     
     constructor(title, colour) {
         this.title = title;
         this._colour = colour;
         this.tasks = [];
-        this.id = this.projectID++;
+        this.id = Project.projectID++;
+        localStorage.setItem("projectID", Project.projectID);
     }
 
+    serialize() {
+        return {title: this.title, colour: this._colour, tasks: this.tasks, id: this.id}
+    }
+
+    static deserialize(json) {
+        const project = new Project(json.title, json.colour);
+        project.tasks = json.tasks;
+        project.id = json.id;
+        return project;
+    }
     get colour() {
         return this._colour;
     }
@@ -27,5 +38,9 @@ export default class Project {
         } else {
             throw new console.error("Task not found");
         }
+    }
+
+    getID() {
+        return this.id;
     }
 }

@@ -2,13 +2,14 @@ import './style.scss';
 import './style.css';
 import Project from './project.js';
 import Task from './task.js';
+import isBefore from 'date-fns/isBefore';
 
+let allProjects;
 const todayButton = document.getElementById("today");
 const weekButton = document.getElementById("week");
 const projectsUL = document.querySelector(".projects ul");
 const tasksUL = document.querySelector(".tasks ul");
 var today = require('date-fns/endOfToday');
-var isBefore = require('date-fns/isBefore');
 var tomorrow = require('date-fns/startOfTomorrow');
 const addProjectForm = document.getElementById("add-project");
 const createProjectButton = document.getElementById("create-project");
@@ -19,6 +20,21 @@ const createTaskButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 
+const initializeStorage = () => {
+    Project.projectID = parseInt(localStorage.getItem("projectID"), 10) || 1;
+    console.log(`On initialize storage projectID is: ${Project.projectID}`);
+    if (localStorage.getItem("allProjects")) {
+        allProjects = JSON.parse(localStorage.getItem("allProjects")).map(data => Project.deserialize(data));
+    } else {
+        console.log(`Before craeting default project ID is: ${Project.projectID}`);
+        const defaultProject = new Project("default", "#FFFFFF");
+        console.log(`After creating default project ID is: ${Project.projectID}`);
+        allProjects = [];
+        allProjects.push(defaultProject);
+        localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
+    }
+}
+
 const createProject = (event) => {
     event.preventDefault();
     let projectTitle = document.getElementById("project-title").value;
@@ -28,7 +44,7 @@ const createProject = (event) => {
     }
     let projectToAdd = new Project(projectTitle, projectColour);
     allProjects.push(projectToAdd);
-    localStorage.setItem("allProjects", allProjects);
+    localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
     addProjectForm.close();
     initializeScreen();
 }
@@ -39,7 +55,7 @@ const initializeScreen = () => {
     allProjects.forEach((project) => {
         populateProjectsList(project);
         (project.tasks.forEach((task) => {
-        if (isBefore(tomorrow, task.getDueDate())) {
+        if (isBefore(task.getDueDate, tomorrow)) {
             populateTasksList(task);
         }
     }))})
@@ -85,10 +101,11 @@ const populateTasksList = (task) => {
 
 const createTask = (event) => {
     event.preventDefault();
+    Task.taskID = parseInt(localStorage.getItem("taskID"), 10) || 1;
     const taskTitle = document.getElementById("task-title").value;
     const taskDescription = document.getElementById("description").value;
     const taskDate = document.getElementById("due-date").value;
-    const taskProjectID = document.getElementById("project").value;
+    const taskProjectID = document.getElementById("projects").value;
     const taskPriority = document.getElementById("priority").value;
     let taskProject = allProjects[0];
     allProjects.forEach((project) => {
@@ -97,20 +114,13 @@ const createTask = (event) => {
         }
     })
     let taskToAdd = new Task(taskTitle, taskDescription, taskDate, taskProject, taskPriority);
-    taskProject.addTask(taskToAdd);
-    localStorage.setItem("allProjects", allProjects);
+    localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
+    addTaskForm.close();
 
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("allProjects")) {
-        let allProjects = localStorage.getItem("allProjects");
-    } else {
-        const defaultProject = new Project("default", "#FFFFFF");
-        let allProjects = [];
-        allProjects.push(defaultProject);
-        localStorage.setItem("allProjects", allProjects);
-    }
+    initializeStorage();
     initializeScreen();
     const projectsItems = document.querySelectorAll(".project-item");
     projectsItems.forEach((item) => {
@@ -138,7 +148,7 @@ createTaskButton.addEventListener("click", () => {
     const selectProject = document.getElementById("projects");
     allProjects.forEach((project) => {
         const projectOption = document.createElement("option");
-        projectOption.setAttribute("value", `${project.id}`);
+        projectOption.setAttribute("value", `${project.getID()}`);
         projectOption.textContent = `${project.title}`;
         selectProject.appendChild(projectOption);
     })
