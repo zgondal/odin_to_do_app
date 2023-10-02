@@ -3,6 +3,7 @@ import './style.css';
 import Project from './project.js';
 import Task from './task.js';
 import isBefore from 'date-fns/isBefore';
+import IdManager from './idmanager';
 
 let allProjects;
 const todayButton = document.getElementById("today");
@@ -19,16 +20,13 @@ const addTaskForm = document.getElementById("add-task");
 const createTaskButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
+const idmanager = new IdManager();
 
 const initializeStorage = () => {
-    Project.projectID = parseInt(localStorage.getItem("projectID"), 10) || 1;
-    console.log(`On initialize storage projectID is: ${Project.projectID}`);
     if (localStorage.getItem("allProjects")) {
         allProjects = JSON.parse(localStorage.getItem("allProjects")).map(data => Project.deserialize(data));
     } else {
-        console.log(`Before craeting default project ID is: ${Project.projectID}`);
-        const defaultProject = new Project("default", "#FFFFFF");
-        console.log(`After creating default project ID is: ${Project.projectID}`);
+        const defaultProject = new Project("default", "#FFFFFF", idmanager.getNextProjectId());
         allProjects = [];
         allProjects.push(defaultProject);
         localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
@@ -42,7 +40,7 @@ const createProject = (event) => {
     if (!projectTitle || !projectColour) {
         throw new Error("Please provide a valid title and colour");
     }
-    let projectToAdd = new Project(projectTitle, projectColour);
+    let projectToAdd = new Project(projectTitle, projectColour, idmanager.getNextProjectId());
     allProjects.push(projectToAdd);
     localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
     addProjectForm.close();
@@ -101,19 +99,14 @@ const populateTasksList = (task) => {
 
 const createTask = (event) => {
     event.preventDefault();
-    Task.taskID = parseInt(localStorage.getItem("taskID"), 10) || 1;
+    // Task.taskID = parseInt(localStorage.getItem("taskID"), 10) || 1;
     const taskTitle = document.getElementById("task-title").value;
     const taskDescription = document.getElementById("description").value;
     const taskDate = document.getElementById("due-date").value;
     const taskProjectID = document.getElementById("projects").value;
     const taskPriority = document.getElementById("priority").value;
-    let taskProject = allProjects[0];
-    allProjects.forEach((project) => {
-        if (project.id === taskProjectID) {
-            taskProject = project;
-        }
-    })
-    let taskToAdd = new Task(taskTitle, taskDescription, taskDate, taskProject, taskPriority);
+    
+    let taskToAdd = new Task(taskTitle, taskDescription, taskDate, taskProjectID, taskPriority, idmanager.getNextTaskId());
     localStorage.setItem("allProjects", JSON.stringify(allProjects.map(obj => obj.serialize())));
     addTaskForm.close();
 

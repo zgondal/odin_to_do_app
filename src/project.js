@@ -1,22 +1,23 @@
+import Task from './task.js'
+
 export default class Project {
-    static projectID = null;
+    static projectID = parseInt(localStorage.getItem("projectID"), 10) || 1;;
     
-    constructor(title, colour) {
+    constructor(title, colour, id) {
         this.title = title;
         this._colour = colour;
         this.tasks = [];
-        this.id = Project.projectID++;
-        localStorage.setItem("projectID", Project.projectID);
+        this.id = id;
+        // localStorage.setItem("projectID", Project.projectID);
     }
 
     serialize() {
-        return {title: this.title, colour: this._colour, tasks: this.tasks, id: this.id}
+        return {title: this.title, colour: this._colour, tasks: this.tasks.map(task => task.serialize()), id: this.id}
     }
 
     static deserialize(json) {
-        const project = new Project(json.title, json.colour);
-        project.tasks = json.tasks;
-        project.id = json.id;
+        const project = new Project(json.title, json.colour, json.id);
+        project.tasks = json.tasks.map(task => Task.deserialize(task));
         return project;
     }
     get colour() {
