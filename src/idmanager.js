@@ -5,12 +5,14 @@ export default class IdManager {
     }
   
     getNextProjectId() {
-      localStorage.setItem("projectIDCounter", this.projectIDCounter++);
-      return this.projectIDCounter;
+      this.projectIDCounter++;
+      localStorage.setItem("projectIDCounter", this.projectIDCounter);
+      return this.projectIDCounter - 1;
     }
   
     getNextTaskId() {
-      localStorage.setItem("taskIDCounter", this.taskIDCounter++);
-      return this.taskIdCounter;
+      this.taskIDCounter++;
+      localStorage.setItem("taskIDCounter", this.taskIDCounter);
+      return this.taskIDCounter - 1;
       }
   }

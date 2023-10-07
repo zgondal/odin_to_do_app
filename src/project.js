@@ -1,14 +1,17 @@
 import Task from './task.js'
+import * as local_storage from './local-storage.js'
+import { allProjects } from './index.js';
+
+
+const { jsonToProjectArray, storeProjectsToLocalStorage } = local_storage;
 
 export default class Project {
-    static projectID = parseInt(localStorage.getItem("projectID"), 10) || 1;;
     
     constructor(title, colour, id) {
         this.title = title;
         this._colour = colour;
         this.tasks = [];
         this.id = id;
-        // localStorage.setItem("projectID", Project.projectID);
     }
 
     serialize() {
@@ -17,7 +20,6 @@ export default class Project {
 
     static deserialize(json) {
         const project = new Project(json.title, json.colour, json.id);
-        project.tasks = json.tasks.map(task => Task.deserialize(task));
         return project;
     }
     get colour() {
@@ -37,11 +39,15 @@ export default class Project {
         if (indexToRemove !== -1) {
             this.tasks.splice(indexToRemove, 1);
         } else {
-            throw new console.error("Task not found");
+            throw new Error("Task not found");
         }
     }
 
     getID() {
         return this.id;
+    }
+
+    getTasks() {
+        return this.tasks;
     }
 }
