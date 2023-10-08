@@ -17,10 +17,10 @@ const tasksUL = document.querySelector(".tasks ul");
 const createProjectButton = document.getElementById("create-project");
 const submitNewProject = document.getElementById("submit-project");
 const cancelNewProject = document.getElementById("cancel-project");
-const addProjectForm = document.getElementById("add-project");
+const addProjectModal = document.getElementById("add-project");
 const projectForm = document.getElementById("new-project");
 const taskForm = document.getElementById("new-task");
-const addTaskForm = document.getElementById("add-task");
+const addTaskModal = document.getElementById("add-task");
 const createTaskButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 });
-createProjectButton.addEventListener("click", () => {addProjectForm.showModal()});
+createProjectButton.addEventListener("click", () => {addProjectModal.showModal()});
 submitNewProject.addEventListener("click", (event) => {
     createProject(event);
     projectsUL.innerHTML = "";
@@ -119,9 +119,9 @@ weekButton.addEventListener("click", () => {
     console.log(`current view: ${currentView}`);
     getThisWeeksTasks();
 });
-cancelNewProject.addEventListener("click", () => {addProjectForm.close()});
+cancelNewProject.addEventListener("click", () => {addProjectModal.close()});
 createTaskButton.addEventListener("click", () => {
-    addTaskForm.showModal();
+    addTaskModal.showModal();
     const selectProject = document.getElementById("projects");
     selectProject.innerHTML = "";
     allProjects.forEach((project) => {
@@ -131,9 +131,11 @@ createTaskButton.addEventListener("click", () => {
         selectProject.appendChild(projectOption);
     })
     });
-cancelNewTask.addEventListener("click", () => {addTaskForm.close()});
+cancelNewTask.addEventListener("click", () => {addTaskModal.close()});
 submitNewTask.addEventListener("click", (event) => {
     const due_date = document.getElementById("due-date").value;
+
+    // TODO: Prevent form submission if any of the fields are blank
     if (due_date.trim() === "") {
         event.preventDefault();
         alert("Please select a date and time.");

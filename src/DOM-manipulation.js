@@ -5,8 +5,8 @@ import Task from "./task.js";
 import * as local_storage from "./local-storage.js";
 
 const { jsonToProjectArray, storeProjectsToLocalStorage, deserializeTasks } = local_storage;
-const addTaskForm = document.getElementById("add-task");
-const addProjectForm = document.getElementById("add-project");
+const addTaskModal = document.getElementById("add-task");
+const addProjectModal = document.getElementById("add-project");
 const today = endOfToday();
 const tomorrow = endOfTomorrow();
 export const createProject = (event) => {
@@ -17,7 +17,7 @@ export const createProject = (event) => {
         throw new Error("Please provide a valid title and colour");
     }
     let projectToAdd = new Project(projectTitle, projectColour, idmanager.getNextProjectId());
-    addProjectForm.close();
+    addProjectModal.close();
     allProjects.push(projectToAdd);
     storeProjectsToLocalStorage();
 }
@@ -66,6 +66,7 @@ export const populateTasksList = (task) => {
         status.dataset.taskid = task.getID();
         taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
         tasksUL.appendChild(taskItem);
+        // TODO: Add edit and delete buttons
     } else {
         throw new Error("Not a task.");
     }
@@ -79,6 +80,6 @@ export const createTask = (event) => {
     const taskProjectID = document.getElementById("projects").value;
     const taskPriority = document.getElementById("priority").value;
     let taskToAdd = new Task(taskTitle, taskDescription, taskDate, taskProjectID, taskPriority, false, idmanager.getNextTaskId());
-    addTaskForm.close();
+    addTaskModal.close();
     storeProjectsToLocalStorage();
 }

@@ -39,7 +39,7 @@
         <form method="dialog" id="new-task">
             <div>
                 <label for="task-title">Task title: </label>
-                <input type="text" id="task-title">
+                <input type="text" id="task-title" required>
             </div>
             <div>
                 <label for="description">Task description: </label>
@@ -47,11 +47,11 @@
             </div>
             <div>
                 <label for="due-date">Deadline: </label>
-                <input type="datetime-local" id="due-date">
+                <input type="datetime-local" id="due-date" required>
             </div>
             <div>
                 <label for="project">Project: </label>
-                <select id="projects">
+                <select id="projects" required>
                     <option value="none">Select a project...</option>
                 </select>
             </div>
@@ -67,7 +67,20 @@
         </form>
     </dialog>
     <dialog id="add-project">
-        <form method="dialog" id="new-project"><div class="project-title"><label for="project-title">Project title: </label><input type="text" id="project-title"></div><div class="project-colour"><label for="project-colour">Choose a colour for this project: </label><input type="color" id="project-colour"></div><div class="buttons"><button id="cancel-project" type="reset">Cancel</button><button id="submit-project" type="submit">Add</button></div></form>
+        <form method="dialog" id="new-project">
+            <div class="project-title">
+                <label for="project-title">Project title: </label>
+                <input type="text" id="project-title" required>
+            </div>
+            <div class="project-colour">
+                <label for="project-colour">Choose a colour for this project: </label>
+                <input type="color" id="project-colour" required>
+            </div>
+            <div class="buttons">
+                <button id="cancel-project" type="reset">Cancel</button>
+                <button id="submit-project" type="submit">Add</button>
+            </div>
+        </form>
     </dialog>
 </body>
 </html>

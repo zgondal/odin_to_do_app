@@ -60,6 +60,9 @@ body {
 }
 .nav > .projects > ul {
   margin: 0;
+  list-style: none;
+  padding: 0 0 0 8px;
+  font-size: 2.5rem;
 }
 .nav > .projects > ul > li > .project-item {
   cursor: pointer;
@@ -101,6 +104,7 @@ body {
   list-style: none;
   font-family: "cursive";
   padding: 0 0 0 8px;
+  font-size: 2.5rem;
 }
 .tasks > ul > li {
   border-top: 4px solid var(--project-colour);
