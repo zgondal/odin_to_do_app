@@ -1,6 +1,7 @@
 import Project from './project.js'
 import { allProjects } from './index.js';
 import Task from './task.js';
+import { idmanager } from './index.js';
 
 const jsonToProjectArray = () => {
     const projectsJSON = JSON.parse(localStorage.getItem("allProjects"))
@@ -9,8 +10,10 @@ const jsonToProjectArray = () => {
         return projectsJSON.map((projectData) => Project.deserialize(projectData));
     } else {
         // Return an empty array if there are no projects in storage
-        
-        return [];
+        const allProjects = [];
+        const defaultProject = new Project("Default", "#000000", idmanager.getNextProjectId());
+        allProjects.push(defaultProject);
+        return allProjects;
     }
 }
 

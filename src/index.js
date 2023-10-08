@@ -32,16 +32,11 @@ const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completed = document.getElementById("completed");
 
 let allProjects = [];
+
 const initializeStorage = () => {
-    if (localStorage.getItem("allProjects")) {
-        allProjects = jsonToProjectArray();
-        deserializeTasks();
-    } else {
-        allProjects = [];
-        const defaultProject = new Project("default", "#FFFFFF", idmanager.getNextProjectId());
-        allProjects.push(defaultProject);
-        storeProjectsToLocalStorage();
-    }
+    allProjects = jsonToProjectArray();
+    deserializeTasks();
+    storeProjectsToLocalStorage();
 }
 
 const getThisWeeksTasks = () => {

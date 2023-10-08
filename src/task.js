@@ -1,27 +1,26 @@
 import {allProjects} from './index.js';
-import format from 'date-fns';
 
 export default class Task {
     constructor(title, description, due_date, projectID, priority, completed, id) {
     // These variables are private because they are within the closure of the constructor.
-        let _title = title;
-        let _description = description;
-        let _due_date = new Date(due_date);
-        let _projectID = projectID;
-        let _priority = priority;
-        let _completed = completed;
-        let _id = id;
+        this._title = title;
+        this._description = description;
+        this._due_date = new Date(due_date);
+        this._projectID = projectID;
+        this._priority = priority;
+        this._completed = completed;
+        this._id = id;
         
         // Public methods to access private properties
-        this.getTitle = () => _title;
-        this.getDescription = () => _description;
-        this.getDueDate = () => _due_date;
-        this.getProjectID = () => _projectID;
-        this.getPriority = () => _priority;
-        this.getStatus = () => _completed;
-        this.getID = () => _id;
+        this.getTitle = () => this._title;
+        this.getDescription = () => this._description;
+        this.getDueDate = () => this._due_date;
+        this.getProjectID = () => this._projectID;
+        this.getPriority = () => this._priority;
+        this.getStatus = () => this._completed;
+        this.getID = () => this._id;
         this.addTaskToProject();
-        console.log(`Task created: ${this.getTitle()}`);
+        // console.log(`Task created: ${this.getTitle()}`);
     }
 
     serialize() {
@@ -37,6 +36,7 @@ export default class Task {
         allProjects.forEach(project => {
             if (project.id === parseInt(this.getProjectID(), 10)) {
                 project.addTask(this);
+                this._color = project.colour;
                 console.log(`Task added to project: ${project.title}`);
             }
         });
@@ -48,7 +48,7 @@ export default class Task {
 
     // Public methods to modify private properties
     setTitle(newTitle) {
-        _title = newTitle;
+        this._title = newTitle;
     }
 
     setDescription(newDescription) {
@@ -56,16 +56,16 @@ export default class Task {
     }
 
     setDueDate(newDueDate) {
-        _due_date = newDueDate;
+        this._due_date = new Date(newDueDate);
     }
 
     setProjectID(newProjectID) {
         allProjects.forEach(project => {
             if (newProjectID === project.id) {
                 project.addTask(this);
-            } else {
-                throw new Error("New project not found.");
+                return;
             }
+            throw new Error("New project not found.");
         })
         allProjects.forEach((project) => {
             if (this._projectID === project.id) {
@@ -76,7 +76,7 @@ export default class Task {
     }
 
     setPriority(newPriority) {
-        _priority = newPriority;
+        this._priority = newPriority;
     }
 
     setStatus(completed) {

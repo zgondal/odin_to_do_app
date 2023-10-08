@@ -1,7 +1,7 @@
 export default class IdManager {
     constructor() {
-      this.projectIDCounter = parseInt(localStorage.getItem("projectIDCounter"), 10) || 1;
-      this.taskIDCounter = parseInt(localStorage.getItem("taskIDCounter"), 10) || 1;
+      this.projectIDCounter = Number(localStorage.getItem("projectIDCounter")) ?? 0;
+      this.taskIDCounter = Number(localStorage.getItem("taskIDCounter")) ?? 0;
     }
   
     getNextProjectId() {
