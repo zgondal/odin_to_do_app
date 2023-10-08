@@ -7,13 +7,11 @@ const jsonToProjectArray = () => {
     const projectsJSON = JSON.parse(localStorage.getItem("allProjects"))
     if (Array.isArray(projectsJSON)) {
         // Deserialize each project and return the resulting array
+        console.log("Converted allProjects from JSON to array");
         return projectsJSON.map((projectData) => Project.deserialize(projectData));
     } else {
         // Return an empty array if there are no projects in storage
-        const allProjects = [];
-        const defaultProject = new Project("Default", "#000000", idmanager.getNextProjectId());
-        allProjects.push(defaultProject);
-        return allProjects;
+        return [];
     }
 }
 
@@ -27,10 +25,14 @@ const deserializeTasks = () => {
     projectsJSON.forEach((projectData) => {
         allProjects.forEach((project) => {
             if (projectData.id === project.id) {
-                project.tasks = projectData.tasks.map(task => Task.deserialize(task));
+                project.tasks = projectData.tasks.map(task => {
+                    console.log(task);
+                    return Task.deserialize(task)
+                });
             }
         })
-    })      
+    })
+    console.log("Converted tasks from JSON to array");      
 }
 
 export {jsonToProjectArray, storeProjectsToLocalStorage, deserializeTasks}; 

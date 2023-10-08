@@ -1,6 +1,17 @@
+@font-face {
+    font-family: 'typewriter';
+    src: url(./fonts/mom-webfont.woff) format("woff"), url(./fonts/mom-webfont.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: 'cursive';
+    src: url(./fonts/journal-webfont.woff) format("woff"), url(./fonts/journal-webfont.woff2) format("woff2");
+}
+
 :root {
-    font-size: 8px;
-    font-family:Arial, Helvetica, sans-serif;
+    font-size: 2vh;
+    font-family: 'typewriter';
+    --project-colour: '#ffffff';
 }
 
 body {
@@ -45,16 +56,24 @@ body {
                 margin: 0;
                 border: 0;
                 height: 32px;
+                position: relative;
             
                 > svg {
                     max-height: 32px;
-                    width: auto;    
+                    width: auto;
+                    position: absolute;   
+                    top: 4px; 
                 }
             }
         }
 
-        > ul > li > .project-item {
+        > ul {
+            margin: 0;
+
+            > li > .project-item {
             cursor: pointer;
+            font-family: 'cursive';
+           }
         }
     }
 }
@@ -65,6 +84,7 @@ body {
     flex-direction: column;
     font-size: 2.5rem;
     background-color: rgb(122, 122, 122);
+    height: 95vh;
 
     > div {
         display: inline-flex;
@@ -81,26 +101,43 @@ body {
             margin: 0;
             border: 0;
             height: 32px;
+            position: relative;
+            background-color: rgb(122, 122, 122);
         
             > svg {
                 max-height: 32px;
-                width: auto;    
+                width: auto;
+                position: relative;  
+                top: 3px;  
             }
         }
     }
 
     > ul {
         list-style: none;
-        :nth-child(odd) {
-            background-color: antiquewhite;
-            color: black;
+        font-family: 'cursive';
+        padding: 0 0 0 8px;
 
+        > li {
+            border-top: 4px solid var(--project-colour);
+
+        }
+
+        .completed {
+            text-decoration: line-through;
+        }
+
+        :nth-child(odd) {
+            background-color: rgb(195, 195, 195);
+            color: black;
+            
             > label {
-                background-color: antiquewhite;
+                background-color: rgb(195, 195, 195);
             }
         }
 
         :nth-child(even) {
+            padding: 0;
             background-color: rgb(155, 155, 155);
             color: black;
         }

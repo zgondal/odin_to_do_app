@@ -7,27 +7,27 @@ const { jsonToProjectArray, storeProjectsToLocalStorage } = local_storage;
 
 export default class Project {
     
-    constructor(title, colour, id) {
+    constructor(title, color, id) {
         this.title = title;
-        this._colour = colour;
+        this._color = color;
         this.tasks = [];
         this.id = id;
     }
 
     serialize() {
-        return {title: this.title, colour: this._colour, tasks: this.tasks.map(task => task.serialize()), id: this.id}
+        return {title: this.title, color: this._color, tasks: this.tasks.map(task => task.serialize()), id: this.id}
     }
 
     static deserialize(json) {
-        const project = new Project(json.title, json.colour, json.id);
+        const project = new Project(json.title, json.color, json.id);
         return project;
     }
-    get colour() {
-        return this._colour;
+    get color() {
+        return this._color;
     }
 
-    set colour(hex) {
-        this._colour = hex;
+    set color(hex) {
+        this._color = hex;
     }
 
     addTask(task) {

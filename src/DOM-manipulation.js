@@ -64,6 +64,7 @@ export const populateTasksList = (task) => {
         title.htmlFor = "task-status";
         taskItem.appendChild(title);
         status.dataset.taskid = task.getID();
+        taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
         tasksUL.appendChild(taskItem);
     } else {
         throw new Error("Not a task.");

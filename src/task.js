@@ -1,4 +1,4 @@
-import {allProjects} from './index.js';
+import { allProjects } from './index.js';
 
 export default class Task {
     constructor(title, description, due_date, projectID, priority, completed, id) {
@@ -6,7 +6,6 @@ export default class Task {
         this._title = title;
         this._description = description;
         this._due_date = new Date(due_date);
-        this._projectID = projectID;
         this._priority = priority;
         this._completed = completed;
         this._id = id;
@@ -19,8 +18,9 @@ export default class Task {
         this.getPriority = () => this._priority;
         this.getStatus = () => this._completed;
         this.getID = () => this._id;
-        this.addTaskToProject();
-        // console.log(`Task created: ${this.getTitle()}`);
+        this.addTaskToProject(projectID);
+        this.getColor = () => this._color;
+        console.log(`Task created: ${this.getTitle()} in project: ${this.getProjectID()}`);
     }
 
     serialize() {
@@ -32,11 +32,13 @@ export default class Task {
         return task;
     }
 
-    addTaskToProject() {
+    addTaskToProject(projectID) {
         allProjects.forEach(project => {
-            if (project.id === parseInt(this.getProjectID(), 10)) {
+            console.log(project.title);
+            if (project.id === parseInt(projectID, 10)) {
+                this._projectID = projectID;
+                this._color = project.color;
                 project.addTask(this);
-                this._color = project.colour;
                 console.log(`Task added to project: ${project.title}`);
             }
         });

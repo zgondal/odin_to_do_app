@@ -1,6 +1,15 @@
+@font-face {
+  font-family: "typewriter";
+  src: url(./fonts/mom-webfont.woff) format("woff"), url(./fonts/mom-webfont.woff2) format("woff2");
+}
+@font-face {
+  font-family: "cursive";
+  src: url(./fonts/journal-webfont.woff) format("woff"), url(./fonts/journal-webfont.woff2) format("woff2");
+}
 :root {
-  font-size: 8px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 2vh;
+  font-family: "typewriter";
+  --project-colour: "#ffffff";
 }
 
 body {
@@ -41,13 +50,20 @@ body {
   margin: 0;
   border: 0;
   height: 32px;
+  position: relative;
 }
 .nav > .projects > span > button > svg {
   max-height: 32px;
   width: auto;
+  position: absolute;
+  top: 4px;
+}
+.nav > .projects > ul {
+  margin: 0;
 }
 .nav > .projects > ul > li > .project-item {
   cursor: pointer;
+  font-family: "cursive";
 }
 
 .tasks {
@@ -56,6 +72,7 @@ body {
   flex-direction: column;
   font-size: 2.5rem;
   background-color: rgb(122, 122, 122);
+  height: 95vh;
 }
 .tasks > div {
   display: inline-flex;
@@ -71,22 +88,35 @@ body {
   margin: 0;
   border: 0;
   height: 32px;
+  position: relative;
+  background-color: rgb(122, 122, 122);
 }
 .tasks > div > button > svg {
   max-height: 32px;
   width: auto;
+  position: relative;
+  top: 3px;
 }
 .tasks > ul {
   list-style: none;
+  font-family: "cursive";
+  padding: 0 0 0 8px;
+}
+.tasks > ul > li {
+  border-top: 4px solid var(--project-colour);
+}
+.tasks > ul .completed {
+  text-decoration: line-through;
 }
 .tasks > ul :nth-child(odd) {
-  background-color: antiquewhite;
+  background-color: rgb(195, 195, 195);
   color: black;
 }
 .tasks > ul :nth-child(odd) > label {
-  background-color: antiquewhite;
+  background-color: rgb(195, 195, 195);
 }
 .tasks > ul :nth-child(even) {
+  padding: 0;
   background-color: rgb(155, 155, 155);
   color: black;
 }

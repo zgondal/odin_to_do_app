@@ -2,7 +2,7 @@ import './style.scss';
 import './style.css';
 import Project from './project.js';
 import Task from './task.js';
-import {isBefore, endOfToday, endOfTomorrow, getWeek} from 'date-fns';
+import { isBefore, endOfToday, endOfTomorrow, getWeek } from 'date-fns';
 import IdManager from './idmanager.js';
 import * as local_storage from './local-storage.js';
 import * as DOM_manipulation from './DOM-manipulation.js';
@@ -14,8 +14,6 @@ const todayButton = document.getElementById("today");
 const weekButton = document.getElementById("week");
 const projectsUL = document.querySelector(".projects ul");
 const tasksUL = document.querySelector(".tasks ul");
-let today = endOfToday();
-let tomorrow = endOfTomorrow();
 const createProjectButton = document.getElementById("create-project");
 const submitNewProject = document.getElementById("submit-project");
 const cancelNewProject = document.getElementById("cancel-project");
@@ -27,23 +25,29 @@ const createTaskButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 const idmanager = new IdManager();
-let currentView = "today";
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completed = document.getElementById("completed");
-
+let today = endOfToday();
+let tomorrow = endOfTomorrow();
 let allProjects = [];
+let currentView = "today";
 
 const initializeStorage = () => {
-    allProjects = jsonToProjectArray();
-    deserializeTasks();
-    storeProjectsToLocalStorage();
+    if (localStorage.getItem("allProjects")) {
+        allProjects = jsonToProjectArray();
+        deserializeTasks();
+    } else {
+        const defaultProject = new Project("Default", "#000000", idmanager.getNextProjectId());
+        allProjects.push(defaultProject);
+        storeProjectsToLocalStorage();
+    }   
 }
 
 const getThisWeeksTasks = () => {
     tasksUL.innerHTML = "";
     allProjects.forEach((project) => {
         project.tasks.forEach((task) => {
-            if (getWeek(task.getDueDate()) === getWeek(today)) {
+            if (getWeek(task.getDueDate()) <= getWeek(today)) {
                 populateTasksList(task);
             }
         })
@@ -135,6 +139,7 @@ submitNewTask.addEventListener("click", (event) => {
         alert("Please select a date and time.");
     } else {
         createTask(event);
+        tasksUL.innerHTML = "";
         allProjects.forEach(project => {
             project.tasks.forEach(task => {
                 if (isBefore(task.getDueDate(), today)) {
@@ -171,4 +176,4 @@ completed.addEventListener("click", () => {
         })
     })
 })
-export {allProjects, projectsUL, tasksUL, idmanager};
+export { allProjects, projectsUL, tasksUL, idmanager };
