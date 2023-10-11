@@ -49,6 +49,7 @@ export const populateProjectsList = (project) => {
 }
 
 export const populateTasksList = (task) => {
+    // TODO: Receive state parameter and populate tasks according to current state
     if (task instanceof Task) {
         const taskItem = document.createElement("li");
         const status = document.createElement("input");
@@ -65,8 +66,17 @@ export const populateTasksList = (task) => {
         taskItem.appendChild(title);
         status.dataset.taskid = task.getID();
         taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
-        tasksUL.appendChild(taskItem);
         // TODO: Add edit and delete buttons
+        const menu = document.createElement("div");
+        menu.innerHTML = '<ul><li><button>Edit</button></li><li><button>Delete</button></li></ul>';
+        menu.classList.add("hide", "menu");
+        taskItem.appendChild(menu);
+        const showMenu = document.createElement("button");
+        showMenu.textContent = "︙";
+        showMenu.classList.add("options");
+        showMenu.dataset.taskid = task.getID();
+        taskItem.appendChild(showMenu);
+        tasksUL.appendChild(taskItem);
     } else {
         throw new Error("Not a task.");
     }

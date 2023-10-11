@@ -27,6 +27,7 @@ const submitNewTask = document.getElementById("submit-task");
 const idmanager = new IdManager();
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completed = document.getElementById("completed");
+// TODO: Create enum for view
 let today = endOfToday();
 let tomorrow = endOfTomorrow();
 let allProjects = [];
@@ -82,7 +83,18 @@ const toggleTaskStatus = (event) => {
         taskToToggle.parentNode.classList.remove("completed");
     }
     storeProjectsToLocalStorage();
-} 
+}
+
+const showMenu = (event) => {
+    const taskId = event.target.dataset.taskid;
+    const menu = event.target.previousElementSibling;
+    menu.classList.toggle("hide");
+    document.addEventListener("click", (event) => {
+        if (event.target !== menu) {
+            menu.classList.add("hide");
+        }
+    })
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeStorage();
@@ -165,7 +177,12 @@ todayButton.addEventListener("click", () => {
     })})
 });
 
-tasksUL.addEventListener("click", toggleTaskStatus);
+tasksUL.addEventListener("click", (event) => {
+    toggleTaskStatus(event);
+    if (event.target.classList.contains("options")) {
+        showMenu(event);
+    }
+});
 
 completed.addEventListener("click", () => {
     currentView = "completed";

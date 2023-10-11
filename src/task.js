@@ -20,7 +20,6 @@ export default class Task {
         this.getID = () => this._id;
         this.addTaskToProject(projectID);
         this.getColor = () => this._color;
-        console.log(`Task created: ${this.getTitle()} in project: ${this.getProjectID()}`);
     }
 
     serialize() {
@@ -34,12 +33,10 @@ export default class Task {
 
     addTaskToProject(projectID) {
         allProjects.forEach(project => {
-            console.log(project.title);
             if (project.id === parseInt(projectID, 10)) {
                 this._projectID = projectID;
                 this._color = project.color;
                 project.addTask(this);
-                console.log(`Task added to project: ${project.title}`);
             }
         });
     }
@@ -82,8 +79,6 @@ export default class Task {
     }
 
     setStatus(completed) {
-        console.log(`Setting status to: ${completed}`);
         this._completed = completed;
-        console.log(`Status set to: ${this._completed}`);
     }
 }

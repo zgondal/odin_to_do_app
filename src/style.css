@@ -108,6 +108,42 @@ body {
 }
 .tasks > ul > li {
   border-top: 4px solid var(--project-colour);
+  display: flex;
+  position: relative;
+}
+.tasks > ul > li .menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1;
+}
+.tasks > ul > li .menu > ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.tasks > ul > li .menu > ul > li {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+.tasks > ul > li .menu > ul > li :last-child {
+  border-bottom: none;
+}
+.tasks > ul > li .hide {
+  display: none;
+}
+.tasks > ul > li :last-child {
+  margin-left: auto;
+}
+.tasks > ul > li > button {
+  padding: 0;
+  border: none;
+  font-size: 3rem;
+  font-weight: 800;
 }
 .tasks > ul .completed {
   text-decoration: line-through;
@@ -119,10 +155,24 @@ body {
 .tasks > ul :nth-child(odd) > label {
   background-color: rgb(195, 195, 195);
 }
+.tasks > ul :nth-child(odd) > button {
+  padding: 0;
+  border: none;
+  font-size: 3rem;
+  font-weight: 800;
+  background-color: rgb(195, 195, 195);
+}
 .tasks > ul :nth-child(even) {
   padding: 0;
   background-color: rgb(155, 155, 155);
   color: black;
+}
+.tasks > ul :nth-child(even) > button {
+  padding: 0;
+  border: none;
+  font-size: 3rem;
+  font-weight: 800;
+  background-color: rgb(155, 155, 155);
 }
 
 dialog {
