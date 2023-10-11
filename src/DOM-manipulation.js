@@ -68,7 +68,7 @@ export const populateTasksList = (task) => {
         taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
         // TODO: Add edit and delete buttons
         const menu = document.createElement("div");
-        menu.innerHTML = '<ul><li><button>Edit</button></li><li><button>Delete</button></li></ul>';
+        menu.innerHTML = '<button>Edit</button><button>Delete</button>';
         menu.classList.add("hide", "menu");
         taskItem.appendChild(menu);
         const showMenu = document.createElement("button");

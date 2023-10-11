@@ -112,25 +112,27 @@ body {
   position: relative;
 }
 .tasks > ul > li .menu {
-  display: block;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  z-index: 1;
-}
-.tasks > ul > li .menu > ul {
-  list-style: none;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 90%;
+  right: 4px;
+  background-color: #fff;
+  border: 3px solid #3a3a3a;
+  border-radius: 4px;
+  z-index: 1;
+  width: 15vw;
 }
-.tasks > ul > li .menu > ul > li {
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
+.tasks > ul > li .menu > button {
+  font-size: 2.5rem;
+  border: none;
+  border-bottom: 1px solid black;
+  padding: 0;
+  font-family: "cursive";
+  background-color: #fff;
 }
-.tasks > ul > li .menu > ul > li :last-child {
+.tasks > ul > li .menu :last-child {
+  margin-left: 0;
   border-bottom: none;
 }
 .tasks > ul > li .hide {
@@ -145,6 +147,9 @@ body {
   font-size: 3rem;
   font-weight: 800;
 }
+.tasks > ul > li > div {
+  margin-left: auto;
+}
 .tasks > ul .completed {
   text-decoration: line-through;
 }
@@ -156,6 +161,7 @@ body {
   background-color: rgb(195, 195, 195);
 }
 .tasks > ul :nth-child(odd) > button {
+  cursor: pointer;
   padding: 0;
   border: none;
   font-size: 3rem;
@@ -168,6 +174,7 @@ body {
   color: black;
 }
 .tasks > ul :nth-child(even) > button {
+  cursor: pointer;
   padding: 0;
   border: none;
   font-size: 3rem;

@@ -73,9 +73,7 @@ const toggleTaskStatus = (event) => {
     } else if (!taskToToggle.checked) {
         allProjects.forEach(project => {
             project.tasks.forEach(task => {
-                console.log(`Checking task: ${task.getID()} against target of ${targetTask}`);
                 if (task.getID() === targetTask) {
-                    console.log(`Found task: ${task.getID()} against target of ${targetTask}`);
                     task.setStatus(false);
                 }
             })
@@ -89,11 +87,6 @@ const showMenu = (event) => {
     const taskId = event.target.dataset.taskid;
     const menu = event.target.previousElementSibling;
     menu.classList.toggle("hide");
-    document.addEventListener("click", (event) => {
-        if (event.target !== menu) {
-            menu.classList.add("hide");
-        }
-    })
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -178,7 +171,10 @@ todayButton.addEventListener("click", () => {
 });
 
 tasksUL.addEventListener("click", (event) => {
-    toggleTaskStatus(event);
+    // Check if the target is the checkbox
+    if (event.target.type === "checkbox") {
+        toggleTaskStatus(event);
+    }
     if (event.target.classList.contains("options")) {
         showMenu(event);
     }
