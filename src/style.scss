@@ -1,263 +1,264 @@
 @font-face {
-    font-family: 'typewriter';
-    src: url(./fonts/mom-webfont.woff) format("woff"), url(./fonts/mom-webfont.woff2) format("woff2");
+  font-family: "typewriter";
+  src:
+    url(./fonts/mom-webfont.woff) format("woff"),
+    url(./fonts/mom-webfont.woff2) format("woff2");
 }
 
 @font-face {
-    font-family: 'cursive';
-    src: url(./fonts/journal-webfont.woff) format("woff"), url(./fonts/journal-webfont.woff2) format("woff2");
+  font-family: "cursive";
+  src:
+    url(./fonts/journal-webfont.woff) format("woff"),
+    url(./fonts/journal-webfont.woff2) format("woff2");
 }
 
 :root {
-    font-size: 2vh;
-    font-family: 'typewriter';
-    --project-colour: '#ffffff';
+  font-size: 2vh;
+  font-family: "typewriter";
+  --project-colour: "#ffffff";
 }
 
 body {
-    display: flex;
-    gap: 32px;
-    background-color: rgb(42, 42, 42);
-    color: aliceblue;
+  display: flex;
+  gap: 32px;
+  background-color: rgb(42, 42, 42);
+  color: aliceblue;
 }
 
 .nav {
+  display: flex;
+  flex-direction: column;
+  font-size: 3rem;
+  gap: 16px;
+
+  > #today {
+    cursor: pointer;
+  }
+
+  > #week {
+    cursor: pointer;
+  }
+
+  > #completed {
+    cursor: pointer;
+  }
+
+  > .projects {
     display: flex;
     flex-direction: column;
-    font-size: 3rem;
-    gap: 16px;
 
-    > #today {
-        cursor: pointer;
-    }
+    > span {
+      display: inline-flex;
 
-    > #week {
-        cursor: pointer;
-    }
+      > h3 {
+        margin: 0;
+        font-size: 3rem;
+      }
 
-    > #completed {
-        cursor: pointer;
-    }
+      > button {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        height: 32px;
+        position: relative;
 
-    > .projects {
-        display: flex;
-        flex-direction: column;
-
-        > span {
-            display: inline-flex;
-
-            > h3 {
-                margin: 0;
-                font-size: 3rem;
-            } 
-
-            > button {
-                padding: 0;
-                margin: 0;
-                border: 0;
-                height: 32px;
-                position: relative;
-            
-                > svg {
-                    max-height: 32px;
-                    width: auto;
-                    position: absolute;   
-                    top: 4px; 
-                }
-            }
+        > svg {
+          max-height: 32px;
+          width: auto;
+          position: absolute;
+          top: 4px;
         }
-
-        > ul {
-            margin: 0;
-            list-style: none;
-            padding: 0 0 0 8px;
-            font-size: 2.5rem;
-
-            > li > .project-item {
-            cursor: pointer;
-            font-family: 'cursive';
-           }
-        }
-    }
-}
-
-.tasks {
-    flex-grow: 3;
-    display: flex;
-    flex-direction: column;
-    font-size: 2.5rem;
-    background-color: rgb(122, 122, 122);
-    height: 95vh;
-
-    > div {
-        display: inline-flex;
-
-        > h3 {
-            margin: 0;
-        }
-        :last-child {
-            margin-left: auto;
-        }
-
-        > button {
-            padding: 0;
-            margin: 0;
-            border: 0;
-            height: 32px;
-            position: relative;
-            background-color: rgb(122, 122, 122);
-        
-            > svg {
-                max-height: 32px;
-                width: auto;
-                position: relative;  
-                top: 3px;  
-            }
-        }
+      }
     }
 
     > ul {
-        list-style: none;
-        font-family: 'cursive';
-        padding: 0 0 0 8px;
-        font-size: 2.5rem;
+      margin: 0;
+      list-style: none;
+      padding: 0 0 0 8px;
+      font-size: 2.5rem;
 
-        > li {
-            border-top: 4px solid var(--project-colour);
-            display: flex;
-            position: relative;
-
-            .menu {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 90%;
-                right: 4px;
-                background-color: #fff;
-                border: 3px solid #3a3a3a;
-                border-radius: 4px;
-                z-index: 1;
-                width: 15vw;
-
-                > button {
-                    font-size: 2.5rem;
-                    border: none;
-                    border-bottom: 1px solid black;
-                    padding: 0;
-                    font-family: 'cursive';
-                    background-color: #fff;
-                }
-
-                :last-child {
-                    margin-left: 0;
-                    border-bottom: none;
-                }
-            }
-
-            .hide {
-                display: none;
-            }
-
-            :last-child {
-                margin-left: auto;
-            }
-            
-
-            > button {
-                padding: 0;
-                border: none;
-                font-size: 3rem;
-                font-weight: 800;
-            }
-
-            > div {
-                margin-left: auto;
-            }
-        }
-
-        .completed {
-            text-decoration: line-through;
-        }
-
-        :nth-child(odd) {
-            background-color: rgb(195, 195, 195);
-            color: black;
-            
-            > label {
-                background-color: rgb(195, 195, 195);
-            }
-
-            > button {
-                cursor: pointer;
-                padding: 0;
-                border: none;
-                font-size: 3rem;
-                font-weight: 800;
-                background-color: rgb(195, 195, 195);
-            }
-        }
-
-        :nth-child(even) {
-            padding: 0;
-            background-color: rgb(155, 155, 155);
-            color: black;
-
-            > button {
-                cursor: pointer;
-                padding: 0;
-                border: none;
-                font-size: 3rem;
-                font-weight: 800;
-                background-color: rgb(155, 155, 155);
-            }
-        }
+      > li > .project-item {
+        cursor: pointer;
+        font-family: "cursive";
+      }
     }
+  }
+}
+
+.tasks {
+  flex-grow: 3;
+  display: flex;
+  flex-direction: column;
+  font-size: 2.5rem;
+  background-color: rgb(122, 122, 122);
+  height: 95vh;
+
+  > div {
+    display: inline-flex;
+
+    > h3 {
+      margin: 0;
+    }
+    :last-child {
+      margin-left: auto;
+    }
+
+    > button {
+      padding: 0;
+      margin: 0;
+      border: 0;
+      height: 32px;
+      position: relative;
+      background-color: rgb(122, 122, 122);
+
+      > svg {
+        max-height: 32px;
+        width: auto;
+        position: relative;
+        top: 3px;
+      }
+    }
+  }
+
+  > ul {
+    list-style: none;
+    font-family: "cursive";
+    padding: 0 0 0 8px;
+    font-size: 2.5rem;
+
+    > li {
+      border-top: 4px solid var(--project-colour);
+      display: flex;
+      position: relative;
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 90%;
+        right: 4px;
+        background-color: #fff;
+        border: 3px solid #3a3a3a;
+        border-radius: 4px;
+        z-index: 1;
+        width: 15vw;
+
+        > button {
+          font-size: 2.5rem;
+          border: none;
+          border-bottom: 1px solid black;
+          padding: 0;
+          font-family: "cursive";
+          background-color: #fff;
+        }
+
+        :last-child {
+          margin-left: 0;
+          border-bottom: none;
+        }
+      }
+
+      .hide {
+        display: none;
+      }
+
+      :last-child {
+        margin-left: auto;
+      }
+
+      > button {
+        padding: 0;
+        border: none;
+        font-size: 3rem;
+        font-weight: 800;
+      }
+
+      > div {
+        margin-left: auto;
+      }
+    }
+
+    .completed {
+      text-decoration: line-through;
+    }
+
+    :nth-child(odd) {
+      background-color: rgb(195, 195, 195);
+      color: black;
+
+      > label {
+        background-color: rgb(195, 195, 195);
+      }
+
+      > button {
+        cursor: pointer;
+        padding: 0;
+        border: none;
+        font-size: 3rem;
+        font-weight: 800;
+        background-color: rgb(195, 195, 195);
+      }
+    }
+
+    :nth-child(even) {
+      padding: 0;
+      background-color: rgb(155, 155, 155);
+      color: black;
+
+      > button {
+        cursor: pointer;
+        padding: 0;
+        border: none;
+        font-size: 3rem;
+        font-weight: 800;
+        background-color: rgb(155, 155, 155);
+      }
+    }
+  }
 }
 
 dialog {
-    border-radius: 8px;
+  border-radius: 8px;
 }
 
 dialog::backdrop {
-    background-color: rgba(121, 121, 121, 0.8);
+  background-color: rgba(121, 121, 121, 0.8);
 }
 
 #new-project {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 2rem;
+
+  > div {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
-    font-size: 2rem;
-
-    > div {
-        display: flex;
-        gap: 8px;
-
-        :last-child {
-            margin-left: auto;
-        }
-    }
+    gap: 8px;
 
     :last-child {
-        margin-left: auto;
-        gap: 16px;
+      margin-left: auto;
     }
+  }
+
+  :last-child {
+    margin-left: auto;
+    gap: 16px;
+  }
 }
 
 #new-task {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 2rem;
 
-    > div {
-        &:last-child {
-            margin-left: auto;
-        }
+  > div {
+    &:last-child {
+      margin-left: auto;
     }
+  }
 
-    :last-child {
-        margin-left: auto;
-    }
+  :last-child {
+    margin-left: auto;
+  }
 }
-
-

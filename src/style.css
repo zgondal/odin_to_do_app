@@ -1,10 +1,14 @@
 @font-face {
   font-family: "typewriter";
-  src: url(./fonts/mom-webfont.woff) format("woff"), url(./fonts/mom-webfont.woff2) format("woff2");
+  src:
+    url(./fonts/mom-webfont.woff) format("woff"),
+    url(./fonts/mom-webfont.woff2) format("woff2");
 }
 @font-face {
   font-family: "cursive";
-  src: url(./fonts/journal-webfont.woff) format("woff"), url(./fonts/journal-webfont.woff2) format("woff2");
+  src:
+    url(./fonts/journal-webfont.woff) format("woff"),
+    url(./fonts/journal-webfont.woff2) format("woff2");
 }
 :root {
   font-size: 2vh;
@@ -219,4 +223,4 @@ dialog::backdrop {
 }
 #new-task :last-child {
   margin-left: auto;
-}/*# sourceMappingURL=style.css.map */
+} /*# sourceMappingURL=style.css.map */
