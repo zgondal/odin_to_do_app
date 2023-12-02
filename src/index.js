@@ -69,24 +69,14 @@ const toggleTaskStatus = (event) => {
   if (taskToToggle.checked) {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
-        console.log(
-          `Checking task: ${task.getId()} against target of ${targetTask}`,
-        );
-        if (task.getId() === targetTask) {
-          console.log(
-            `Found task: ${task.getId()} against target of ${targetTask}`,
-          );
-          task.setStatus(true);
-        }
+        if (task.getId() === targetTask) task.setStatus(true);
       });
     });
     taskToToggle.parentNode.classList.add("completed");
-  } else if (!taskToToggle.checked) {
+  } else {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
-        if (task.getId() === targetTask) {
-          task.setStatus(false);
-        }
+        if (task.getId() === targetTask) task.setStatus(false);
       });
     });
     taskToToggle.parentNode.classList.remove("completed");
@@ -94,7 +84,7 @@ const toggleTaskStatus = (event) => {
   storeProjectsToLocalStorage(allProjects);
 };
 
-const showMenu = (event) => {
+const showContextMenu = (event) => {
   const taskId = event.target.dataset.taskid;
   const menu = event.target.previousElementSibling;
   menu.classList.toggle("hide");
@@ -103,14 +93,14 @@ const showMenu = (event) => {
 document.addEventListener("DOMContentLoaded", () => {
   initializeStorage();
   // TODO: Do I need this write right after initializeStorage?
-  storeProjectsToLocalStorage(allProjects);
+  // storeProjectsToLocalStorage(allProjects);
   initializeScreen();
+  //TODO: Move this to separate function
   const projectsItems = document.querySelectorAll(".project-item");
   projectsItems.forEach((item) => {
     item.addEventListener("click", (event) => {
-      currentView = `project-${item.dataset.projectID}`;
-      console.log(`current view: ${currentView}`);
-      const selectedProject = event.target.dataset.projectID;
+      currentView = `project-${item.dataset.projectId}`;
+      const selectedProject = event.target.dataset.projectId;
       allProjects.forEach((project) => {
         if (project.id === parseInt(selectedProject, 10)) {
           tasksUL.innerHTML = "";
@@ -122,37 +112,41 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+//TODO: Move this to DOM-Manipulation
 showProjectModalButton.addEventListener("click", () => {
   addProjectModal.showModal();
 });
 submitNewProject.addEventListener("click", (event) => {
   createProject(event);
+  projectForm.reset();
   projectsUL.innerHTML = "";
   allProjects.forEach((project) => {
     populateProjectsList(project);
   });
+});
+cancelNewProject.addEventListener("click", () => {
   projectForm.reset();
+  addProjectModal.close();
 });
 weekButton.addEventListener("click", () => {
   currentView = "week";
   console.log(`current view: ${currentView}`);
   getThisWeeksTasks();
 });
-cancelNewProject.addEventListener("click", () => {
-  addProjectModal.close();
-});
 showTaskModalButton.addEventListener("click", () => {
   addTaskModal.showModal();
-  const selectProject = document.getElementById("projects");
-  selectProject.innerHTML = "";
+  // Populate projects dropdown in new task form with all projects
+  const selectProjectDropdown = document.getElementById("projects");
+  selectProjectDropdown.innerHTML = "";
   allProjects.forEach((project) => {
     const projectOption = document.createElement("option");
     projectOption.setAttribute("value", `${project.getId()}`);
     projectOption.textContent = `${project.title}`;
-    selectProject.appendChild(projectOption);
+    selectProjectDropdown.appendChild(projectOption);
   });
 });
 cancelNewTask.addEventListener("click", () => {
+  taskForm.reset();
   addTaskModal.close();
 });
 submitNewTask.addEventListener("click", (event) => {
@@ -195,11 +189,12 @@ tasksUL.addEventListener("click", (event) => {
     toggleTaskStatus(event);
   }
   if (event.target.classList.contains("options")) {
-    showMenu(event);
+    showContextMenu(event);
   }
 });
 
 completed.addEventListener("click", () => {
+  // Show completed tasks
   currentView = "completed";
   tasksUL.innerHTML = "";
   allProjects.forEach((project) => {

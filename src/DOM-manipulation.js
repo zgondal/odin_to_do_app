@@ -47,7 +47,7 @@ export const populateProjectsList = (project) => {
     projectLink.classList.add("project-item");
     projectLink.textContent = `${project.title}`;
     projectItem.appendChild(projectLink);
-    projectLink.dataset.projectID = project.id;
+    projectLink.dataset.projectId = project.id;
     projectsUL.appendChild(projectItem);
   } else {
     throw new Error("Not a project.");
