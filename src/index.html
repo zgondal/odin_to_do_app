@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-do</title>
     <script src="/main.bundle.js" type="module" defer></script>
-    <!-- <link rel="stylesheet" href="/style.css"> -->
+    <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <div class="nav">
@@ -13,8 +13,7 @@
       <span id="week">This Week</span>
       <span id="completed">Completed</span>
       <div class="projects">
-        <span
-          ><h3>Projects:&nbsp;</h3>
+        <span><h3>Projects:&nbsp;</h3>
           <button id="create-project">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +129,7 @@
 
     <!-- </div> -->
     <dialog id="add-task">
-      <form method="dialog" id="new-task">
+      <form method="dialog" id="task-form">
         <div>
           <label for="task-title">Task title: </label>
           <input type="text" id="task-title" required />
@@ -168,7 +167,7 @@
       </form>
     </dialog>
     <dialog id="add-project">
-      <form method="dialog" id="new-project">
+      <form method="dialog" id="project-form">
         <div class="project-title">
           <label for="project-title">Project title: </label>
           <input type="text" id="project-title" required />

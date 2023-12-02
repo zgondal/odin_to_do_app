@@ -1,5 +1,4 @@
 import "./style.scss";
-import "./style.css";
 import Project from "./project.js";
 import Task from "./task.js";
 import { isBefore, endOfToday, endOfTomorrow, getWeek } from "date-fns";
@@ -20,23 +19,23 @@ const todayButton = document.getElementById("today");
 const weekButton = document.getElementById("week");
 const projectsUL = document.querySelector(".projects ul");
 const tasksUL = document.querySelector(".tasks ul");
-const createProjectButton = document.getElementById("create-project");
+const showProjectModalButton = document.getElementById("create-project");
 const submitNewProject = document.getElementById("submit-project");
 const cancelNewProject = document.getElementById("cancel-project");
 const addProjectModal = document.getElementById("add-project");
-const projectForm = document.getElementById("new-project");
-const taskForm = document.getElementById("new-tasktasktask");
+const projectForm = document.getElementById("project-form");
+const taskForm = document.getElementById("task-form");
 const addTaskModal = document.getElementById("add-task");
-const createTaskButton = document.getElementById("create-task");
+const showTaskModalButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 const idmanager = new IdManager();
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completed = document.getElementById("completed");
 // TODO: Create enum for view
+let allProjects = [];
 let today = endOfToday();
 let tomorrow = endOfTomorrow();
-let allProjects = [];
 let currentView = "today";
 
 const initializeStorage = () => {
@@ -71,11 +70,11 @@ const toggleTaskStatus = (event) => {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
         console.log(
-          `Checking task: ${task.getID()} against target of ${targetTask}`,
+          `Checking task: ${task.getId()} against target of ${targetTask}`,
         );
-        if (task.getID() === targetTask) {
+        if (task.getId() === targetTask) {
           console.log(
-            `Found task: ${task.getID()} against target of ${targetTask}`,
+            `Found task: ${task.getId()} against target of ${targetTask}`,
           );
           task.setStatus(true);
         }
@@ -85,7 +84,7 @@ const toggleTaskStatus = (event) => {
   } else if (!taskToToggle.checked) {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
-        if (task.getID() === targetTask) {
+        if (task.getId() === targetTask) {
           task.setStatus(false);
         }
       });
@@ -123,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-createProjectButton.addEventListener("click", () => {
+showProjectModalButton.addEventListener("click", () => {
   addProjectModal.showModal();
 });
 submitNewProject.addEventListener("click", (event) => {
@@ -142,13 +141,13 @@ weekButton.addEventListener("click", () => {
 cancelNewProject.addEventListener("click", () => {
   addProjectModal.close();
 });
-createTaskButton.addEventListener("click", () => {
+showTaskModalButton.addEventListener("click", () => {
   addTaskModal.showModal();
   const selectProject = document.getElementById("projects");
   selectProject.innerHTML = "";
   allProjects.forEach((project) => {
     const projectOption = document.createElement("option");
-    projectOption.setAttribute("value", `${project.getID()}`);
+    projectOption.setAttribute("value", `${project.getId()}`);
     projectOption.textContent = `${project.title}`;
     selectProject.appendChild(projectOption);
   });

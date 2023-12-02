@@ -45,7 +45,7 @@ export default class Project {
     }
   }
 
-  getID() {
+  getId() {
     return this.id;
   }
 

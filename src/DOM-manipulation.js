@@ -24,7 +24,7 @@ export const createProject = (event) => {
   );
   addProjectModal.close();
   allProjects.push(projectToAdd);
-  storeProjectsToLocalStorage();
+  storeProjectsToLocalStorage(allProjects);
 };
 
 export const initializeScreen = () => {
@@ -70,7 +70,7 @@ export const populateTasksList = (task) => {
     title.textContent = task.getTitle();
     title.htmlFor = "task-status";
     taskItem.appendChild(title);
-    status.dataset.taskid = task.getID();
+    status.dataset.taskid = task.getId();
     taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
     // TODO: Add edit and delete buttons
     const menu = document.createElement("div");
@@ -80,7 +80,7 @@ export const populateTasksList = (task) => {
     const showMenu = document.createElement("button");
     showMenu.textContent = "︙";
     showMenu.classList.add("options");
-    showMenu.dataset.taskid = task.getID();
+    showMenu.dataset.taskid = task.getId();
     taskItem.appendChild(showMenu);
     tasksUL.appendChild(taskItem);
   } else {
@@ -105,5 +105,5 @@ export const createTask = (event) => {
     idmanager.getNextTaskId(),
   );
   addTaskModal.close();
-  storeProjectsToLocalStorage();
+  storeProjectsToLocalStorage(allProjects);
 };
