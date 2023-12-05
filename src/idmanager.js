@@ -1,4 +1,4 @@
-export default class IdManager {
+class IdManager {
   constructor() {
     this.projectIDCounter =
       Number(localStorage.getItem("projectIDCounter")) ?? -1;
@@ -17,3 +17,7 @@ export default class IdManager {
     return this.taskIDCounter;
   }
 }
+
+const idmanager = new IdManager();
+
+export default idmanager;

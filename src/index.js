@@ -2,7 +2,7 @@ import "./style.scss";
 import Project from "./project.js";
 import Task from "./task.js";
 import { isBefore, endOfToday, endOfTomorrow, getWeek } from "date-fns";
-import IdManager from "./idmanager.js";
+import idmanager from "./idmanager.js";
 import * as local_storage from "./local-storage.js";
 import * as DOM_manipulation from "./DOM-manipulation.js";
 
@@ -10,7 +10,7 @@ const {
   createProject,
   initializeScreen,
   populateProjectsList,
-  populateTasksList,
+  createTaskLI,
   createTask,
 } = DOM_manipulation;
 const { jsonToProjectArray, storeProjectsToLocalStorage } =
@@ -29,19 +29,20 @@ const addTaskModal = document.getElementById("add-task");
 const showTaskModalButton = document.getElementById("create-task");
 const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
-const idmanager = new IdManager();
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completedTasksButton = document.getElementById("completed");
+
 // TODO: Create enum for view
 let allProjects = [];
 let today = endOfToday();
 let tomorrow = endOfTomorrow();
-let currentView = "today";
+let View;
+let currentView;
 
 const initializeStorage = () => {
   if (localStorage.getItem("allProjects")) {
     allProjects = jsonToProjectArray();
-  } else {
+    } else {
     const defaultProject = new Project(
       "Default",
       "#000000",
@@ -57,7 +58,7 @@ const getThisWeeksTasks = () => {
   allProjects.forEach((project) => {
     project.tasks.forEach((task) => {
       if (getWeek(task.getDueDate()) <= getWeek(today)) {
-        populateTasksList(task);
+        createTaskLI(task);
       }
     });
   });
@@ -90,34 +91,52 @@ const showContextMenu = (event) => {
   menu.classList.toggle("hide");
 };
 
+const createStateEnum = () => {
+  const stateEnum = {
+    TODAY: 'today',
+    WEEK: 'week',
+    COMPLETED: 'completed',  
+  }
+
+  allProjects.forEach(project => {
+    stateEnum[project.id] = `project-${project.id}`;
+  })
+
+  return stateEnum;
+}
+
+View = createStateEnum();
+
 document.addEventListener("DOMContentLoaded", () => {
   initializeStorage();
   // TODO: Do I need this write right after initializeStorage?
   // storeProjectsToLocalStorage(allProjects);
   initializeScreen();
+  View = createStateEnum();
+  currentView = View.TODAY;
   //TODO: Move this to separate function
   const projectsItems = document.querySelectorAll(".project-item");
   projectsItems.forEach((item) => {
     item.addEventListener("click", (event) => {
-      currentView = `project-${item.dataset.projectId}`;
+      currentView = View[item.dataset.projectId];
       const selectedProject = event.target.dataset.projectId;
       allProjects.forEach((project) => {
         if (project.id === parseInt(selectedProject, 10)) {
           tasksUL.innerHTML = "";
           project.tasks.forEach((task) => {
-            populateTasksList(task);
+            createTaskLI(task);
           });
         }
       });
     });
   });
 });
-//TODO: Move this to DOM-Manipulation
 showProjectModalButton.addEventListener("click", () => {
   addProjectModal.showModal();
 });
 submitNewProject.addEventListener("click", (event) => {
   createProject(event);
+  View = createStateEnum();
   projectForm.reset();
   projectsUL.innerHTML = "";
   allProjects.forEach((project) => {
@@ -129,7 +148,7 @@ cancelNewProject.addEventListener("click", () => {
   addProjectModal.close();
 });
 weekButton.addEventListener("click", () => {
-  currentView = "week";
+  currentView = View.WEEK;
   console.log(`current view: ${currentView}`);
   getThisWeeksTasks();
 });
@@ -162,7 +181,7 @@ submitNewTask.addEventListener("click", (event) => {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
         if (isBefore(task.getDueDate(), today)) {
-          populateTasksList(task);
+          createTaskLI(task);
         }
       });
     });
@@ -170,14 +189,14 @@ submitNewTask.addEventListener("click", (event) => {
   }
 });
 todayButton.addEventListener("click", () => {
-  currentView = "today";
+  currentView = View.TODAY;
   console.log(`current view: ${currentView}`);
   tasksUL.innerHTML = "";
   allProjects.forEach((project) => {
     const projectTasks = project.getTasks();
     projectTasks.forEach((task) => {
       if (isBefore(task.getDueDate(), today) && !task.getStatus()) {
-        populateTasksList(task);
+        createTaskLI(task);
       }
     });
   });
@@ -195,14 +214,14 @@ tasksUL.addEventListener("click", (event) => {
 
 completedTasksButton.addEventListener("click", () => {
   // Show completed tasks
-  currentView = "completed";
+  currentView = View.COMPLETED;
   tasksUL.innerHTML = "";
   allProjects.forEach((project) => {
     project.tasks.forEach((task) => {
       if (task.getStatus()) {
-        populateTasksList(task);
+        createTaskLI(task);
       }
     });
   });
 });
-export { allProjects, projectsUL, tasksUL, idmanager };
+export { allProjects, projectsUL, tasksUL };

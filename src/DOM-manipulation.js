@@ -1,16 +1,15 @@
-import { allProjects, projectsUL, tasksUL, idmanager } from ".";
+import { allProjects, projectsUL, tasksUL} from ".";
 import Project from "./project.js";
-import { isBefore, endOfToday, endOfTomorrow } from "date-fns";
+import { isBefore, endOfToday } from "date-fns";
 import Task from "./task.js";
 import * as local_storage from "./local-storage.js";
+import idmanager from "./idmanager.js";
 
 const { jsonToProjectArray, storeProjectsToLocalStorage, deserializeTasks } =
   local_storage;
 const addTaskModal = document.getElementById("add-task");
 const addProjectModal = document.getElementById("add-project");
 const today = endOfToday();
-const tomorrow = endOfTomorrow();
-
 
 export const createProject = (event) => {
   event.preventDefault();
@@ -59,7 +58,7 @@ export const initializeScreen = () => {
     populateProjectsList(project);
     project.tasks.forEach((task) => {
       if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
-        populateTasksList(task);
+        createTaskLI(task);
       }
     });
   });
@@ -82,7 +81,7 @@ export const populateProjectsList = (project) => {
   }
 };
 
-export const populateTasksList = (task) => {
+export const createTaskLI = (task) => {
   // TODO: Receive state parameter and populate tasks based on current state
   if (task instanceof Task) {
     const taskItem = document.createElement("li");
