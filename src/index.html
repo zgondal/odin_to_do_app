@@ -182,5 +182,43 @@
         </div>
       </form>
     </dialog>
+    <dialog id="edit-task">
+      <form method="dialog" id="edit-task-form">
+        <div>
+          <label for="edit-task-title">Task title: </label>
+          <input type="text" id="edit-task-title" required />
+        </div>
+        <div>
+          <label for="edit-description">Task description: </label>
+          <textarea id="edit-description" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+          <label for="edit-due-date">Deadline: </label>
+          <input type="datetime-local" id="edit-due-date" required />
+        </div>
+        <div>
+          <label for="edit-project">Project: </label>
+          <select id="edit-project" required>
+            <option value="none">Select a project...</option>
+          </select>
+        </div>
+        <div>
+          <label for="edit-priority">Priority</label>
+          <input
+            type="range"
+            id="edit-priority"
+            min="1"
+            max="5"
+            step="1"
+            value="1"
+          />
+          <output></output>
+        </div>
+        <div>
+          <button id="cancel-edit" type="reset">Cancel</button>
+          <button id="submit-edit" type="submit">Submit</button>
+        </div>
+      </form>
+    </dialog>
   </body>
 </html>

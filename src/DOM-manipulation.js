@@ -101,16 +101,57 @@ export const createTaskLI = (task) => {
     taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
     // TODO: Add edit and delete buttons
     const contextMenu = document.createElement("div");
-    contextMenu.innerHTML = "<button>Edit</button><button>Delete</button>";
+    const editButton = document.createElement("button");
+    editButton.setAttribute("id", "edit-task");
+    editButton.textContent = "Edit";
+    const deleteButton = document.createElement("button");
+    deleteButton.setAttribute("id", "delete-task");
+    deleteButton.textContent = "Delete";
     contextMenu.classList.add("hide", "menu");
+    contextMenu.dataset.taskid = task.getId();
     taskItem.appendChild(contextMenu);
     const showMenuButton = document.createElement("button");
     showMenuButton.textContent = "︙";
     showMenuButton.classList.add("options");
-    showMenuButton.dataset.taskid = task.getId();
     taskItem.appendChild(showMenuButton);
     tasksUL.appendChild(taskItem);
   } else {
     throw new Error("Not a task.");
   }
 };
+
+export const populateEditTaskForm = function(task) {
+  const editTitle = document.getElementById("edit-task-title");
+  const editDescription = document.getElementById("edit-description");
+  const editDate = document.getElementById("edit-due-date");
+  const editProject = document.getElementById("edit-project");
+  const editPriority = document.getElementById("edit-priority");
+  editTitle.value = task.getTitle();
+  editDescription.value = task.getDescription();
+  editDate.value = task.getDueDate();
+  editProject.innerHTML = "";
+  allProjects.forEach((project) => {
+    const projectOption = document.createElement("option");
+    projectOption.setAttribute("value", `${project.getId()}`);
+    projectOption.textContent = `${project.title}`;
+    if (project.getId() === task.getProjectId()) {
+      projectOption.setAttribute("selected", true);
+    }
+    editProject.appendChild(projectOption);
+  });
+  editPriority.value = task.getPriority();
+}
+
+export const editTask = (task) => {
+  const title = document.getElementById("edit-task-title").value;
+  const description = document.getElementById("edit-description").value;
+  const date = document.getElementById("edit-due-date").value;
+  const project = document.getElementById("edit-project").value;
+  const priority = document.getElementById("edit-priority").value;
+  task.setTitle(title);
+  task.setDescription(description);
+  task.setDueDate(date);
+  task.setProjectId(project);
+  task.setPriority(priority);
+  storeProjectsToLocalStorage(allProjects);
+}

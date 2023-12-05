@@ -1,7 +1,7 @@
 import "./style.scss";
 import Project from "./project.js";
 import Task from "./task.js";
-import { isBefore, endOfToday, endOfTomorrow, getWeek } from "date-fns";
+import { isBefore, endOfToday, getWeek } from "date-fns";
 import idmanager from "./idmanager.js";
 import * as local_storage from "./local-storage.js";
 import * as DOM_manipulation from "./DOM-manipulation.js";
@@ -12,6 +12,8 @@ const {
   populateProjectsList,
   createTaskLI,
   createTask,
+  populateEditTaskForm,
+  editTask,
 } = DOM_manipulation;
 const { jsonToProjectArray, storeProjectsToLocalStorage } =
   local_storage;
@@ -31,11 +33,10 @@ const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completedTasksButton = document.getElementById("completed");
-
+const editTaskModal = document.getElementById("edit-task")
 // TODO: Create enum for view
 let allProjects = [];
 let today = endOfToday();
-let tomorrow = endOfTomorrow();
 let View;
 let currentView;
 
@@ -89,6 +90,33 @@ const showContextMenu = (event) => {
   const taskId = event.target.dataset.taskid;
   const menu = event.target.previousElementSibling;
   menu.classList.toggle("hide");
+  menu.addEventListener("click", (menuOption) => {
+    // Match target task in all tasks
+    allProjects.forEach(project => {
+      project.tasks.forEach(task => {
+        if (task.getId() === taskId) {
+          const taskToEdit = task;
+          const targetProject = project;
+  }})});
+    // Show editTask form
+    if (menuOption.target.id === "edit-task") {
+      editTaskModal.showModal();
+      // Populate form with existing values
+      populateEditTaskForm(taskToEdit);
+      const submitEditButton = document.getElementById("submit-edit");
+      submitEditButton.preventDefault();
+      submitEditButton.addEventListener("click", () => {
+        editTask(taskToEdit);
+      })
+    }
+    if (menuOption.target.id === "delete-task") {
+      let currentIndex = 0;
+      targetProject.tasks.forEach(task => {
+        if (task.getId() === taskToEdit.getId()) targetProject.tasks.splice(currentIndex, 1);
+        currentIndex++;
+      })
+    }
+  })
 };
 
 const createStateEnum = () => {
