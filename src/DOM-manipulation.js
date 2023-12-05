@@ -1,6 +1,6 @@
 import { allProjects, projectsUL, tasksUL} from ".";
 import Project from "./project.js";
-import { isBefore, endOfToday } from "date-fns";
+import { isBefore, endOfToday, format } from "date-fns";
 import Task from "./task.js";
 import * as local_storage from "./local-storage.js";
 import idmanager from "./idmanager.js";
@@ -130,7 +130,7 @@ export const populateEditTaskForm = function(task) {
   const editPriority = document.getElementById("edit-priority");
   editTitle.value = task.getTitle();
   editDescription.value = task.getDescription();
-  editDate.value = task.getDueDate();
+  editDate.value = format(task.getDueDate(), "yyyy-MM-dd'T'HH:mm");
   editProject.innerHTML = "";
   allProjects.forEach((project) => {
     const projectOption = document.createElement("option");

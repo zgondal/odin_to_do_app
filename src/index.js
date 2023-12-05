@@ -1,7 +1,7 @@
 import "./style.scss";
 import Project from "./project.js";
 import Task from "./task.js";
-import { isBefore, endOfToday, getWeek } from "date-fns";
+import { isBefore, endOfToday, getWeek, } from "date-fns";
 import idmanager from "./idmanager.js";
 import * as local_storage from "./local-storage.js";
 import * as DOM_manipulation from "./DOM-manipulation.js";
