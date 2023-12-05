@@ -1,19 +1,19 @@
 export default class IdManager {
   constructor() {
     this.projectIDCounter =
-      Number(localStorage.getItem("projectIDCounter")) ?? 0;
-    this.taskIDCounter = Number(localStorage.getItem("taskIDCounter")) ?? 0;
+      Number(localStorage.getItem("projectIDCounter")) ?? -1;
+    this.taskIDCounter = Number(localStorage.getItem("taskIDCounter")) ?? -1;
   }
 
   getNextProjectId() {
     this.projectIDCounter++;
     localStorage.setItem("projectIDCounter", this.projectIDCounter);
-    return this.projectIDCounter - 1;
+    return this.projectIDCounter;
   }
 
   getNextTaskId() {
     this.taskIDCounter++;
     localStorage.setItem("taskIDCounter", this.taskIDCounter);
-    return this.taskIDCounter - 1;
+    return this.taskIDCounter;
   }
 }

@@ -31,7 +31,7 @@ const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 const idmanager = new IdManager();
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
-const completed = document.getElementById("completed");
+const completedTasksButton = document.getElementById("completed");
 // TODO: Create enum for view
 let allProjects = [];
 let today = endOfToday();
@@ -65,18 +65,18 @@ const getThisWeeksTasks = () => {
 
 const toggleTaskStatus = (event) => {
   const taskToToggle = event.target;
-  const targetTask = parseInt(taskToToggle.dataset.taskid, 10);
+  const targetTaskId = parseInt(taskToToggle.dataset.taskid, 10);
   if (taskToToggle.checked) {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
-        if (task.getId() === targetTask) task.setStatus(true);
+        if (task.getId() === targetTaskId) task.setStatus(true);
       });
     });
     taskToToggle.parentNode.classList.add("completed");
   } else {
     allProjects.forEach((project) => {
       project.tasks.forEach((task) => {
-        if (task.getId() === targetTask) task.setStatus(false);
+        if (task.getId() === targetTaskId) task.setStatus(false);
       });
     });
     taskToToggle.parentNode.classList.remove("completed");
@@ -193,7 +193,7 @@ tasksUL.addEventListener("click", (event) => {
   }
 });
 
-completed.addEventListener("click", () => {
+completedTasksButton.addEventListener("click", () => {
   // Show completed tasks
   currentView = "completed";
   tasksUL.innerHTML = "";

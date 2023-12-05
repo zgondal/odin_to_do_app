@@ -227,7 +227,7 @@ dialog::backdrop {
   background-color: rgba(121, 121, 121, 0.8);
 }
 
-#new-project {
+#project-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -248,7 +248,7 @@ dialog::backdrop {
   }
 }
 
-#new-task {
+#task-form {
   display: flex;
   flex-direction: column;
   gap: 8px;

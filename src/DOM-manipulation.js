@@ -10,12 +10,17 @@ const addTaskModal = document.getElementById("add-task");
 const addProjectModal = document.getElementById("add-project");
 const today = endOfToday();
 const tomorrow = endOfTomorrow();
+
+
 export const createProject = (event) => {
   event.preventDefault();
   let projectTitle = document.getElementById("project-title").value;
   let projectColour = document.getElementById("project-colour").value;
   if (!projectTitle || !projectColour) {
-    throw new Error("Please provide a valid title and colour");
+    alert("Please provide a valid title and colour");
+    // DEBUG: Unable to view tasks by project after failed form submission
+    // unless page refreshes
+    return;
   }
   let projectToAdd = new Project(
     projectTitle,
@@ -25,67 +30,6 @@ export const createProject = (event) => {
   addProjectModal.close();
   allProjects.push(projectToAdd);
   storeProjectsToLocalStorage(allProjects);
-};
-
-export const initializeScreen = () => {
-  projectsUL.innerHTML = "";
-  tasksUL.innerHTML = "";
-  allProjects.forEach((project) => {
-    populateProjectsList(project);
-    project.tasks.forEach((task) => {
-      if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
-        populateTasksList(task);
-      }
-    });
-  });
-};
-
-export const populateProjectsList = (project) => {
-  if (project instanceof Project) {
-    const projectItem = document.createElement("li");
-    const projectLink = document.createElement("span");
-    projectLink.classList.add("project-item");
-    projectLink.textContent = `${project.title}`;
-    projectItem.appendChild(projectLink);
-    projectLink.dataset.projectId = project.id;
-    projectsUL.appendChild(projectItem);
-  } else {
-    throw new Error("Not a project.");
-  }
-};
-
-export const populateTasksList = (task) => {
-  // TODO: Receive state parameter and populate tasks according to current state
-  if (task instanceof Task) {
-    const taskItem = document.createElement("li");
-    const status = document.createElement("input");
-    status.type = "checkbox";
-    status.id = "task-status";
-    if (task.getStatus()) {
-      status.checked = true;
-      taskItem.classList.add("completed");
-    }
-    taskItem.appendChild(status);
-    const title = document.createElement("label");
-    title.textContent = task.getTitle();
-    title.htmlFor = "task-status";
-    taskItem.appendChild(title);
-    status.dataset.taskid = task.getId();
-    taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
-    // TODO: Add edit and delete buttons
-    const menu = document.createElement("div");
-    menu.innerHTML = "<button>Edit</button><button>Delete</button>";
-    menu.classList.add("hide", "menu");
-    taskItem.appendChild(menu);
-    const showMenu = document.createElement("button");
-    showMenu.textContent = "︙";
-    showMenu.classList.add("options");
-    showMenu.dataset.taskid = task.getId();
-    taskItem.appendChild(showMenu);
-    tasksUL.appendChild(taskItem);
-  } else {
-    throw new Error("Not a task.");
-  }
 };
 
 export const createTask = (event) => {
@@ -106,4 +50,68 @@ export const createTask = (event) => {
   );
   addTaskModal.close();
   storeProjectsToLocalStorage(allProjects);
+};
+
+export const initializeScreen = () => {
+  projectsUL.innerHTML = "";
+  tasksUL.innerHTML = "";
+  allProjects.forEach((project) => {
+    populateProjectsList(project);
+    project.tasks.forEach((task) => {
+      if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+        populateTasksList(task);
+      }
+    });
+  });
+};
+
+// TODO: Maybe pass allProjects to this method instead of calling this method
+// in a loop that iterates through allProjects(Move loop inside method body 
+// instead of before method call)
+export const populateProjectsList = (project) => {
+  if (project instanceof Project) {
+    const projectItem = document.createElement("li");
+    const projectLink = document.createElement("span");
+    projectLink.classList.add("project-item");
+    projectLink.textContent = `${project.title}`;
+    projectLink.dataset.projectId = project.id;
+    projectItem.appendChild(projectLink);
+    projectsUL.appendChild(projectItem);
+  } else {
+    throw new Error("Not a project.");
+  }
+};
+
+export const populateTasksList = (task) => {
+  // TODO: Receive state parameter and populate tasks based on current state
+  if (task instanceof Task) {
+    const taskItem = document.createElement("li");
+    const status = document.createElement("input");
+    status.type = "checkbox";
+    status.id = "task-status";
+    if (task.getStatus()) {
+      status.checked = true;
+      taskItem.classList.add("completed");
+    }
+    status.dataset.taskid = task.getId();
+    taskItem.appendChild(status);
+    const title = document.createElement("label");
+    title.textContent = task.getTitle();
+    title.htmlFor = "task-status";
+    taskItem.appendChild(title);
+    taskItem.style.setProperty("--project-colour", `${task.getColor()}`);
+    // TODO: Add edit and delete buttons
+    const contextMenu = document.createElement("div");
+    contextMenu.innerHTML = "<button>Edit</button><button>Delete</button>";
+    contextMenu.classList.add("hide", "menu");
+    taskItem.appendChild(contextMenu);
+    const showMenuButton = document.createElement("button");
+    showMenuButton.textContent = "︙";
+    showMenuButton.classList.add("options");
+    showMenuButton.dataset.taskid = task.getId();
+    taskItem.appendChild(showMenuButton);
+    tasksUL.appendChild(taskItem);
+  } else {
+    throw new Error("Not a task.");
+  }
 };
