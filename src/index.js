@@ -33,7 +33,8 @@ const cancelNewTask = document.getElementById("cancel-task");
 const submitNewTask = document.getElementById("submit-task");
 const checkboxes = document.querySelectorAll("input[type=checkbox]");
 const completedTasksButton = document.getElementById("completed");
-const editTaskModal = document.getElementById("edit-task")
+const editTaskModal = document.getElementById("edit-task");
+const editTaskForm = document.getElementById("edit-task-form");
 // TODO: Create enum for view
 let allProjects = [];
 let today = endOfToday();
@@ -87,16 +88,20 @@ const toggleTaskStatus = (event) => {
 };
 
 const showContextMenu = (event) => {
-  const taskId = event.target.dataset.taskid;
+  const taskId = event.target.dataset.taskId;
+  console.log(`you clicked on task: ${taskId}`);
   const menu = event.target.previousElementSibling;
+  let taskToEdit;
+  let targetProject;
   menu.classList.toggle("hide");
   menu.addEventListener("click", (menuOption) => {
     // Match target task in all tasks
-    allProjects.forEach(project => {
-      project.tasks.forEach(task => {
-        if (task.getId() === taskId) {
-          const taskToEdit = task;
-          const targetProject = project;
+    allProjects.forEach((project) => {
+      project.tasks.forEach((task) => {
+        if (task.getId() === parseInt(taskId, 10)) {
+          console.log(`task found: ${task}`);
+          taskToEdit = task;
+          targetProject = project;
   }})});
     // Show editTask form
     if (menuOption.target.id === "edit-task") {
@@ -104,9 +109,16 @@ const showContextMenu = (event) => {
       // Populate form with existing values
       populateEditTaskForm(taskToEdit);
       const submitEditButton = document.getElementById("submit-edit");
-      submitEditButton.preventDefault();
-      submitEditButton.addEventListener("click", () => {
+      const cancelEditButton = document.getElementById("cancel-edit");
+      submitEditButton.addEventListener("click", (submitEvent) => {
+        submitEvent.preventDefault();
         editTask(taskToEdit);
+        editTaskForm.reset();
+        editTaskModal.close();
+      })
+      cancelEditButton.addEventListener("click", () => {
+        editTaskForm.reset();
+        editTaskModal.close();
       })
     }
     if (menuOption.target.id === "delete-task") {

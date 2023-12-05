@@ -107,12 +107,14 @@ export const createTaskLI = (task) => {
     const deleteButton = document.createElement("button");
     deleteButton.setAttribute("id", "delete-task");
     deleteButton.textContent = "Delete";
+    contextMenu.appendChild(editButton);
+    contextMenu.appendChild(deleteButton);
     contextMenu.classList.add("hide", "menu");
-    contextMenu.dataset.taskid = task.getId();
     taskItem.appendChild(contextMenu);
     const showMenuButton = document.createElement("button");
     showMenuButton.textContent = "︙";
     showMenuButton.classList.add("options");
+    showMenuButton.dataset.taskId = task.getId();
     taskItem.appendChild(showMenuButton);
     tasksUL.appendChild(taskItem);
   } else {
