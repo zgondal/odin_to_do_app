@@ -79,12 +79,23 @@ body {
     > ul {
       margin: 0;
       list-style: none;
-      padding: 0 0 0 8px;
+      padding: 0 0 0 0px;
       font-size: 2.5rem;
+      border: 1px solid white;
+      
+      
+      > li {
+        border-bottom: 1px solid white;
+        background-color: var(--project-colour);
+      }
 
       > li > .project-item {
         cursor: pointer;
         font-family: "cursive";
+      }
+
+      :last-child {
+        border-bottom: 0px;
       }
     }
   }

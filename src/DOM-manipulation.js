@@ -76,6 +76,7 @@ export const populateProjectsList = (project) => {
     projectLink.dataset.projectId = project.id;
     projectItem.appendChild(projectLink);
     projectsUL.appendChild(projectItem);
+    projectItem.style.setProperty("--project-colour", `${project.getColor()}`)
   } else {
     throw new Error("Not a project.");
   }

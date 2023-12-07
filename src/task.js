@@ -16,7 +16,7 @@ export default class Task {
     this._priority = priority;
     this._completed = completed;
     this._id = id;
-
+    this.addTaskToProject(projectId);
     // Public methods to access private properties
     this.getTitle = () => this._title;
     this.getDescription = () => this._description;
@@ -26,7 +26,7 @@ export default class Task {
     this.getStatus = () => this._completed;
     this.getId = () => this._id;
     this.getColor = () => this._color;
-    this.addTaskToProject(projectId);
+    
   }
 
   serialize() {
@@ -58,7 +58,7 @@ export default class Task {
     allProjects.forEach((project) => {
       if (project.id === parseInt(projectId, 10)) {
         this._projectId = projectId;
-        this._color = project.color;
+        this._color = project.getColor();
         project.addTask(this);
       }
     });

@@ -24,7 +24,7 @@ export default class Project {
     return project;
   }
 
-  get color() {
+  getColor() {
     return this._color;
   }
 
