@@ -123,11 +123,17 @@ const showContextMenu = (event) => {
       })
     }
     if (menuOption.target.id === "delete-task") {
-      let currentIndex = 0;
-      targetProject.tasks.forEach(task => {
-        if (task.getId() === taskToEdit.getId()) targetProject.tasks.splice(currentIndex, 1);
-        currentIndex++;
-      })
+      targetProject.tasks = targetProject.tasks.filter(task => task.getId() !== taskToEdit.getId());
+      // let currentIndex = 0;
+      // targetProject.tasks.forEach(task => {
+      //   if (task.getId() === taskToEdit.getId()) {
+      //     console.log(`Deleting task: ${task.getTitle()}`);
+      //     console.log(`tasks in project: ${targetProject.tasks}`);
+      //     targetProject.tasks.splice(currentIndex, 1);
+      //     return;
+      //   }
+      //   currentIndex++;
+      // })
     }
   })
 };

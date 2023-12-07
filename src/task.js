@@ -10,6 +10,7 @@ export default class Task {
     completed,
     id,
   ) {
+    this._color = undefined;
     this._title = title;
     this._description = description;
     this._due_date = new Date(due_date);
@@ -38,6 +39,7 @@ export default class Task {
       priority: this.getPriority(),
       completed: this.getStatus(),
       id: this.getId(),
+      color: this.getColor(),
     };
   }
 
@@ -51,6 +53,7 @@ export default class Task {
       json.completed,
       json.id,
     );
+    task.setColor(json.color);
     return task;
   }
 
@@ -60,7 +63,7 @@ export default class Task {
         this._projectId = projectId;
         this._color = project.getColor();
         project.addTask(this);
-        console.log("set task to color to:" + this._color);
+        console.log("set task color to:" + this._color);
       }
     });
   }
@@ -105,5 +108,9 @@ export default class Task {
 
   setStatus(completed) {
     this._completed = completed;
+  }
+
+  setColor(newColor) {
+    this._color = newColor;
   }
 }
