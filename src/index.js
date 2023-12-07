@@ -41,6 +41,7 @@ let allProjects = [];
 let today = endOfToday();
 let View;
 let currentView;
+let currentProjectId;
 
 const initializeStorage = () => {
   if (localStorage.getItem("allProjects")) {
@@ -138,17 +139,80 @@ const showContextMenu = (event) => {
   })
 };
 
+const populateTasksUl = () => {
+  tasksUL.innerHTML = "";
+  switch(currentView) {
+    case View.TODO:
+      allProjects.forEach(project => {
+        project.tasks.forEach(task => {
+          if (!task.getStatus()) {
+            createTaskLI(task);
+          }
+        })
+      })
+      break;
+
+    case View.TODAY:
+      allProjects.forEach(project => {
+        project.tasks.forEach(task => {
+          if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+            createTaskLI(task);
+          }
+        })
+      })
+      break;
+    
+    case View.WEEK:
+      allProjects.forEach(project => {
+        project.tasks.forEach(task => {
+          if (getWeek(task.getDueDate) <= getWeek(today) && !task.getStatus()) {
+            createTaskLI(task);
+          }
+        })
+      })
+      break;
+    
+    case View.COMPLETED:
+      allProjects.forEach(project => {
+        project.tasks.forEach(task => {
+          if (task.getStatus) {
+            createTaskLI(task);
+          }
+        })
+      })
+      break;
+
+    case View.PROJECT:
+      allProjects.forEach(project => {
+        if (project.getId() === currentProjectId) {
+          project.tasks.forEach(task => {
+            if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+              createTaskLI(task);
+            }
+          })
+        }
+      })
+      break;
+    
+    default:
+      allProjects.forEach(project => {
+        project.tasks.forEach(task => {
+          if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+            createTaskLI(task);
+          }
+        })
+      })
+  }
+}
+
 const createStateEnum = () => {
   const stateEnum = {
+    TODO: 'todo',
     TODAY: 'today',
     WEEK: 'week',
-    COMPLETED: 'completed',  
+    COMPLETED: 'completed',
+    PROJECT: 'project',  
   }
-
-  allProjects.forEach(project => {
-    stateEnum[project.id] = `project-${project.id}`;
-  })
-
   return stateEnum;
 }
 
@@ -159,22 +223,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // TODO: Do I need this write right after initializeStorage?
   // storeProjectsToLocalStorage(allProjects);
   initializeScreen();
-  View = createStateEnum();
   currentView = View.TODAY;
   //TODO: Move this to separate function
   const projectsItems = document.querySelectorAll(".project-item");
   projectsItems.forEach((item) => {
     item.addEventListener("click", (event) => {
-      currentView = View[item.dataset.projectId];
-      const selectedProject = event.target.dataset.projectId;
-      allProjects.forEach((project) => {
-        if (project.id === parseInt(selectedProject, 10)) {
-          tasksUL.innerHTML = "";
-          project.tasks.forEach((task) => {
-            createTaskLI(task);
-          });
-        }
-      });
+      currentView = View.PROJECT;
+      currentProjectId = event.target.dataset.projectId;
+      populateTasksUl();
     });
   });
 });
@@ -197,7 +253,7 @@ cancelNewProject.addEventListener("click", () => {
 weekButton.addEventListener("click", () => {
   currentView = View.WEEK;
   console.log(`current view: ${currentView}`);
-  getThisWeeksTasks();
+  populateTasksUl();
 });
 showTaskModalButton.addEventListener("click", () => {
   addTaskModal.showModal();
@@ -238,15 +294,7 @@ submitNewTask.addEventListener("click", (event) => {
 todayButton.addEventListener("click", () => {
   currentView = View.TODAY;
   console.log(`current view: ${currentView}`);
-  tasksUL.innerHTML = "";
-  allProjects.forEach((project) => {
-    const projectTasks = project.getTasks();
-    projectTasks.forEach((task) => {
-      if (isBefore(task.getDueDate(), today) && !task.getStatus()) {
-        createTaskLI(task);
-      }
-    });
-  });
+  populateTasksUl();
 });
 tasksUL.addEventListener("click", (event) => {
   // Check if the target is the checkbox
@@ -258,23 +306,11 @@ tasksUL.addEventListener("click", (event) => {
   }
 });
 todoButton.addEventListener("click", () => {
-  tasksUL.innerHTML = "";
-  allProjects.forEach(project => {
-    project.tasks.forEach(task => {
-      createTaskLI(task);
-    })
-  })
+  populateTasksUl();
 })
 completedTasksButton.addEventListener("click", () => {
   // Show completed tasks
   currentView = View.COMPLETED;
-  tasksUL.innerHTML = "";
-  allProjects.forEach((project) => {
-    project.tasks.forEach((task) => {
-      if (task.getStatus()) {
-        createTaskLI(task);
-      }
-    });
-  });
+  populateTasksUl();
 });
 export { allProjects, projectsUL, tasksUL };
