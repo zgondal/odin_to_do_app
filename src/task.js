@@ -60,6 +60,7 @@ export default class Task {
         this._projectId = projectId;
         this._color = project.getColor();
         project.addTask(this);
+        console.log("set task to color to:" + this._color);
       }
     });
   }

@@ -242,7 +242,6 @@ todayButton.addEventListener("click", () => {
     });
   });
 });
-
 tasksUL.addEventListener("click", (event) => {
   // Check if the target is the checkbox
   if (event.target.type === "checkbox") {
@@ -252,7 +251,6 @@ tasksUL.addEventListener("click", (event) => {
     showContextMenu(event);
   }
 });
-
 todoButton.addEventListener("click", () => {
   tasksUL.innerHTML = "";
   allProjects.forEach(project => {
@@ -261,7 +259,6 @@ todoButton.addEventListener("click", () => {
     })
   })
 })
-
 completedTasksButton.addEventListener("click", () => {
   // Show completed tasks
   currentView = View.COMPLETED;

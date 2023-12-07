@@ -28,7 +28,7 @@ export default class Project {
     return this._color;
   }
 
-  set color(hex) {
+  setColor(hex) {
     this._color = hex;
   }
 
