@@ -57,17 +57,6 @@ const initializeStorage = () => {
   }
 };
 
-const getThisWeeksTasks = () => {
-  tasksUL.innerHTML = "";
-  allProjects.forEach((project) => {
-    project.tasks.forEach((task) => {
-      if (getWeek(task.getDueDate()) <= getWeek(today)) {
-        createTaskLI(task);
-      }
-    });
-  });
-};
-
 const toggleTaskStatus = (event) => {
   const taskToToggle = event.target;
   const targetTaskId = parseInt(taskToToggle.dataset.taskid, 10);
@@ -91,7 +80,6 @@ const toggleTaskStatus = (event) => {
 
 const showContextMenu = (event) => {
   const taskId = event.target.dataset.taskId;
-  console.log(`you clicked on task: ${taskId}`);
   const menu = event.target.previousElementSibling;
   let taskToEdit;
   let targetProject;
@@ -125,16 +113,7 @@ const showContextMenu = (event) => {
     }
     if (menuOption.target.id === "delete-task") {
       targetProject.tasks = targetProject.tasks.filter(task => task.getId() !== taskToEdit.getId());
-      // let currentIndex = 0;
-      // targetProject.tasks.forEach(task => {
-      //   if (task.getId() === taskToEdit.getId()) {
-      //     console.log(`Deleting task: ${task.getTitle()}`);
-      //     console.log(`tasks in project: ${targetProject.tasks}`);
-      //     targetProject.tasks.splice(currentIndex, 1);
-      //     return;
-      //   }
-      //   currentIndex++;
-      // })
+      populateTasksUl();
     }
   })
 };
@@ -155,7 +134,7 @@ const populateTasksUl = () => {
     case View.TODAY:
       allProjects.forEach(project => {
         project.tasks.forEach(task => {
-          if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+          if (isBefore(task.getDueDate(), today) && !task.getStatus()) {
             createTaskLI(task);
           }
         })
@@ -165,7 +144,7 @@ const populateTasksUl = () => {
     case View.WEEK:
       allProjects.forEach(project => {
         project.tasks.forEach(task => {
-          if (getWeek(task.getDueDate) <= getWeek(today) && !task.getStatus()) {
+          if (getWeek(task.getDueDate()) <= getWeek(today) && !task.getStatus()) {
             createTaskLI(task);
           }
         })
@@ -175,7 +154,7 @@ const populateTasksUl = () => {
     case View.COMPLETED:
       allProjects.forEach(project => {
         project.tasks.forEach(task => {
-          if (task.getStatus) {
+          if (task.getStatus()) {
             createTaskLI(task);
           }
         })
@@ -186,7 +165,7 @@ const populateTasksUl = () => {
       allProjects.forEach(project => {
         if (project.getId() === currentProjectId) {
           project.tasks.forEach(task => {
-            if (isBefore(today, task.getDueDate()) && !task.getStatus()) {
+            if (!task.getStatus()) {
               createTaskLI(task);
             }
           })
@@ -229,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
   projectsItems.forEach((item) => {
     item.addEventListener("click", (event) => {
       currentView = View.PROJECT;
-      currentProjectId = event.target.dataset.projectId;
+      currentProjectId = parseInt(event.target.dataset.projectId);
       populateTasksUl();
     });
   });
@@ -300,12 +279,14 @@ tasksUL.addEventListener("click", (event) => {
   // Check if the target is the checkbox
   if (event.target.type === "checkbox") {
     toggleTaskStatus(event);
+    populateTasksUl();
   }
   if (event.target.classList.contains("options")) {
     showContextMenu(event);
   }
 });
 todoButton.addEventListener("click", () => {
+  currentView = View.TODO;
   populateTasksUl();
 })
 completedTasksButton.addEventListener("click", () => {
