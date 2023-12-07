@@ -137,7 +137,7 @@ export const populateEditTaskForm = function(task) {
     projectOption.setAttribute("value", `${project.getId()}`);
     projectOption.textContent = `${project.title}`;
     if (project.getId() === task.getProjectId()) {
-      projectOption.setAttribute("selected", true);
+      projectOption.selected = true;
     }
     editProject.appendChild(projectOption);
   });

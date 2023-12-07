@@ -19,6 +19,7 @@ const { jsonToProjectArray, storeProjectsToLocalStorage } =
   local_storage;
 const todayButton = document.getElementById("today");
 const weekButton = document.getElementById("week");
+const todoButton = document.getElementById("todo");
 const projectsUL = document.querySelector(".projects ul");
 const tasksUL = document.querySelector(".tasks ul");
 const showProjectModalButton = document.getElementById("create-project");
@@ -251,6 +252,15 @@ tasksUL.addEventListener("click", (event) => {
     showContextMenu(event);
   }
 });
+
+todoButton.addEventListener("click", () => {
+  tasksUL.innerHTML = "";
+  allProjects.forEach(project => {
+    project.tasks.forEach(task => {
+      createTaskLI(task);
+    })
+  })
+})
 
 completedTasksButton.addEventListener("click", () => {
   // Show completed tasks
